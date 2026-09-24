@@ -5,6 +5,7 @@ import { allTickets, fmt, gameById, seatShort, teamName } from '../../state/sele
 import { TEAMS } from '../../data/teams';
 import { Ticket } from '../../components/Ticket';
 import { Icon } from '../../components/Icon';
+import { PinBadge } from '../../components/PinBadge';
 import { PHeader, Stub } from './parts';
 
 /** Every ticket, kept forever: original artwork, seat, final score, earned marks. */
@@ -86,7 +87,11 @@ export function TicketDetail() {
     { label: 'Issued', done: true, note: current ? `${fmtTime(current.issuedAt)} · artwork printed` : 'Artwork printed' },
     { label: 'Checked in', done: t.checkedIn, note: t.location === 'venue' ? 'At the venue' : 'Beyond the venue' },
     { label: 'Game final', done: !!t.finalScore, note: t.finalScore ? 'Score added' : game?.status === 'live' ? 'In progress' : 'Pending' },
-    { label: 'Milestone moment', done: t.marks.length > 0, note: t.marks.length ? t.marks.map((m) => m.label).join(' · ') : 'Only when earned' },
+    {
+      label: 'Milestone moment',
+      done: t.marks.length + t.pins.length > 0,
+      note: t.marks.length || t.pins.length ? [...t.marks.map((m) => m.label), ...t.pins.map((p) => p.title)].join(' · ') : 'Only when earned',
+    },
   ];
 
   return (
@@ -153,6 +158,19 @@ export function TicketDetail() {
                     <Icon name="image" size={18} /> {memories.length} memor{memories.length > 1 ? 'ies' : 'y'} added
                   </li>
                 )}
+              </ul>
+            </>
+          )}
+
+          {t.pins.length > 0 && (
+            <>
+              <h3 className="td-h3">Pinned to this ticket</h3>
+              <ul className="td-inv td-pins">
+                {t.pins.map((p) => (
+                  <li key={p.kind}>
+                    <PinBadge kind={p.kind} season={p.season} size={34} /> {p.title}
+                  </li>
+                ))}
               </ul>
             </>
           )}

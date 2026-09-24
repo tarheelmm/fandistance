@@ -286,6 +286,14 @@ function GameRecap({ gameId }: { gameId: string }) {
                 {acts} {acts > 1 ? 'activities' : 'activity'} completed
               </li>
             )}
+            {view.pins.map((p) => (
+              <li key={p.kind}>
+                <span className="tick gold">
+                  <Icon name="star" size={12} stroke={2.6} />
+                </span>
+                New pin: {p.title}
+              </li>
+            ))}
             {t.marks.map((m) => (
               <li key={m.label}>
                 <span className="tick gold">

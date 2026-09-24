@@ -20,6 +20,8 @@ export interface ScenarioData {
   memories: Memory[];
   bench: BenchPost[];
   streakBefore: number;
+  /** Past games where the fan was spotlighted as Fan of the Game */
+  spotlights: string[];
 }
 
 const FAN: Fan = {
@@ -79,7 +81,7 @@ export const issueTicketFor = (game: Game, fan: Fan, now: number): Ticket => ({
 const REGULAR: HistorySpec[] = [
   { teamId: 'BAL', season: '2026', count: 5, months: [2, 5] },
   { teamId: 'CAR', season: '2026', count: 1, months: [5, 6] },
-  { teamId: 'BAL', season: '2027', count: 6, months: [0, 1], lastDay: 22 },
+  { teamId: 'BAL', season: '2027', count: 9, months: [0, 1], lastDay: 22 },
 ];
 
 const MILESTONE: HistorySpec[] = [
@@ -128,7 +130,7 @@ const BENCH: BenchPost[] = [
 ];
 
 export function buildScenario(id: ScenarioId, now: number): ScenarioData {
-  const common = { fan: { ...FAN }, bench: BENCH.map((b) => ({ ...b })) };
+  const common = { fan: { ...FAN }, bench: BENCH.map((b) => ({ ...b })), spotlights: [] as string[] };
   switch (id) {
     case 'A':
       return {
@@ -242,6 +244,7 @@ export function buildScenario(id: ScenarioId, now: number): ScenarioData {
         followed: ['BAL', 'CAR', 'BLT', 'CLT', 'WAS', 'CHA'],
         memories: MEMORIES_RICH,
         streakBefore: 3,
+        spotlights: ['h-BAL-2027-6', 'h-BAL-2026-4'],
       };
     }
   }

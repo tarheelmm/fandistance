@@ -76,6 +76,8 @@ export interface Ticket {
   location: FanLocation;
   distanceMiles: number;
   checkedInAt?: number;
+  /** Spotlighted by the team as Fan of the Game (earns that pin). */
+  fanOfGame?: boolean;
   finalScore?: { home: number; away: number };
   marks: MilestoneMark[];
 }

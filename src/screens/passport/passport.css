@@ -972,3 +972,116 @@
 .toggle-row input[type='checkbox']:checked::after {
   transform: translateX(20px);
 }
+
+/* season pin board */
+.pb-count {
+  margin: 12px 0 4px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pb-count b {
+  font-size: 34px;
+  color: var(--text);
+  margin-right: 4px;
+}
+
+.pb-board {
+  margin-top: 16px;
+  padding: 14px 12px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(224, 162, 58, 0.25);
+  /* felt pin board */
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.04), transparent 40%),
+    repeating-radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 3px), linear-gradient(160deg, #182a52, #0d1a36);
+}
+
+.pb-board header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px 12px;
+}
+
+.pb-board h2 {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 21px;
+  letter-spacing: 0.04em;
+}
+
+.pb-board header span {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--md-gold);
+}
+
+.pb-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 8px;
+}
+
+.pb-slot {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 4px;
+  text-align: center;
+  padding: 8px 4px;
+  border-radius: 12px;
+}
+
+.pb-slot .pin {
+  width: min(72px, 100%);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.pb-slot.earned:active {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pb-slot strong {
+  font-size: 11.5px;
+  line-height: 1.2;
+}
+
+.pb-slot small {
+  font-size: 10.5px;
+  line-height: 1.25;
+  color: var(--muted);
+}
+
+.pb-slot:not(.earned) strong {
+  color: var(--muted);
+}
+
+.p-pins {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.p-pins .pin {
+  width: 58px;
+  height: 58px;
+}
+
+.p-pins-empty {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.td-pins li {
+  gap: 12px;
+}

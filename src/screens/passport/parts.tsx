@@ -62,7 +62,7 @@ export function Stub({ t }: { t: TicketView }) {
       </div>
       <div className="stub-art">
         <TicketArt theme={t.art} image={t.artImage} date="" time="" lite />
-        {t.marks.length > 0 && (
+        {t.marks.length + t.pins.length > 0 && (
           <span className="stub-mark" aria-hidden="true">
             <Icon name="star" size={11} stroke={2.4} />
           </span>

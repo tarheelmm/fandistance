@@ -6,6 +6,7 @@ import { fmt } from '../state/selectors';
 import { TicketArt } from './TicketArt';
 import { FDMark } from './FDMark';
 import { TeamMark } from './TeamMark';
+import { PinBadge } from './PinBadge';
 import './ticket.css';
 
 /**
@@ -69,6 +70,14 @@ export function Ticket({ view, phase = 'static', printMs = 2800, stampIn, scoreI
             </div>
             {view.marks.length > 0 && <Marks marks={view.marks} />}
             {view.checkedIn && <Stamp view={view} animate={stampIn} />}
+            {view.pins.length > 0 && (
+              <div className={`ticket-pins ${scoreIn ? 'pin-in' : ''}`}>
+                {view.pins.slice(0, 3).map((p) => (
+                  <PinBadge key={p.kind} kind={p.kind} season={p.season} title={p.title} />
+                ))}
+                {view.pins.length > 3 && <span className="pin-more">+{view.pins.length - 3}</span>}
+              </div>
+            )}
           </div>
 
           <div className="ticket-title">
@@ -146,6 +155,7 @@ function ticketLabel(v: TicketView, seatShown: boolean) {
   if (v.checkedIn) parts.push('Checked in');
   if (v.finalScore) parts.push(`Final: ${away.short} ${v.finalScore.away}, ${home.short} ${v.finalScore.home}`);
   for (const m of v.marks) parts.push(m.detail);
+  for (const p of v.pins) parts.push(`Pin: ${p.title}`);
   return parts.join('. ');
 }
 

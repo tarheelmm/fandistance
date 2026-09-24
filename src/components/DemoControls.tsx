@@ -95,6 +95,9 @@ export function DemoControls({ onRestart }: { onRestart: () => void }) {
                     >
                       + Historic mark
                     </button>
+                    <button disabled={!t || !!t.fanOfGame} onClick={() => dispatch({ type: 'spotlight', gameId: g.id })}>
+                      ★ Fan of the Game
+                    </button>
                   </div>
                 </div>
               );

@@ -45,17 +45,30 @@ Orioles tickets use the 24 approved Baltimore art concepts. Each game's concept 
 
 The images in `public/art/orioles/` are cut from the approved concept sheet, so they are low resolution (about 185×113 px each). To swap in final artwork, replace a file with the same name, or add a new entry to `ORIOLES_ART`. Concept 24, Last Home Game, isn't included yet because the supplied sheet has a screen overlay across it. Other teams still use the generated posters in `TicketArt.tsx`.
 
+## Season pins
+
+Pins are collectible memories from a season. Each one is pinned to the ticket of the game that earned it, and they're collected per team and season on the Pin Board (`/passport/pins`). A fan can earn:
+
+- **First Game:** the first game represented that season
+- **10th, 25th and 50th Game:** of that season
+- **Fan of the Game:** when the team spotlights the fan
+- **Rivalry Game:** the first game against the team's rival
+- **First Road Game** of the season
+- **July 4th**
+
+Every pin except Fan of the Game is added once the game is final. Pins recognize participation. They aren't points and they aren't ranked. The rules are in `src/data/pins.ts`, and `src/components/PinBadge.tsx` draws the enamel-pin art.
+
 ## Demo controls
 
 A small dashed **DEMO** tab on the right edge (or press **D**) opens reviewer tools. They're kept separate from the consumer UI.
 
-- **A** Baltimore vs Boston (Section 330 · Row 9 · Seat 14, 8,315 joined)
+- **A** Baltimore vs Boston (Section 330 · Row 9 · Seat 14, 8,315 joined); tonight is the fan's 10th Orioles game of 2027
 - **B** Standing Room Only
 - **C** Multiple eligible teams/games
 - **D** Completed game
 - **E** Milestone game (end it to add the 50-game, streak and giveaway marks)
 - **F** Established fan Passport (6 teams, 5 leagues, 2 seasons, 37 games)
-- Game state controls (Start / Game final / + Historic mark), fan location (at / beyond the venue), and **Restart demo**
+- Game state controls (Start / Game final / + Historic mark / ★ Fan of the Game), fan location (at / beyond the venue), and **Restart demo**
 
 State persists in `localStorage`, so a reload keeps tickets and seats.
 

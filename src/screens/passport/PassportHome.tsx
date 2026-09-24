@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useStore } from '../../state/store';
-import { allTickets, badges, fmt, teamName, teamStats, totals } from '../../state/selectors';
+import { allPins, allTickets, badges, fmt, teamName, teamStats, totals } from '../../state/selectors';
 import { TEAMS } from '../../data/teams';
 import { FDMark } from '../../components/FDMark';
 import { Icon } from '../../components/Icon';
 import { TeamMark } from '../../components/TeamMark';
 import { Ticket } from '../../components/Ticket';
 import { Scene } from '../../components/Scene';
+import { PinBadge } from '../../components/PinBadge';
 import { BadgeMedal, SectionTitle, Stat, Stub } from './parts';
 
 /** PASSPORT = my fandom history. */
@@ -152,6 +153,9 @@ export function PassportHome() {
         <SectionTitle title="Memorable games" to="/passport/stats" link="Fan stats" />
         <MemorableGames />
 
+        <SectionTitle title="Season pins" to="/passport/pins" link="Pin board" />
+        <SeasonPins season={seasons[0]} />
+
         <SectionTitle title="Memories" to="/passport/memories" />
         <div className="p-mem-grid">
           {state.data.memories.slice(0, 6).map((m) => (
@@ -205,5 +209,19 @@ export function MemorableGames() {
         </Link>
       ))}
     </div>
+  );
+}
+
+function SeasonPins({ season }: { season?: string }) {
+  const { state } = useStore();
+  const pins = allPins(state).filter((p) => p.season === season);
+  return (
+    <Link to="/passport/pins" className="p-pins card" aria-label={`${pins.length} pins earned in ${season}. Open pin board`}>
+      {pins.length ? (
+        pins.slice(0, 6).map((p) => <PinBadge key={`${p.kind}-${p.ticketId}`} kind={p.kind} season={p.season} />)
+      ) : (
+        <span className="p-pins-empty">Pins from your {season} season will collect here, starting with your first game.</span>
+      )}
+    </Link>
   );
 }

@@ -9,6 +9,7 @@ import { TeamMark } from '../../components/TeamMark';
 import { Ticket } from '../../components/Ticket';
 import { Icon, type IconName } from '../../components/Icon';
 import { PassportToday } from '../../components/PassportToday';
+import { PinBadge } from '../../components/PinBadge';
 import './gameday.css';
 
 export const AREAS: { id: string; title: string; icon: IconName; color: string; blurb: string }[] = [
@@ -153,6 +154,9 @@ function tileSnippet(id: string, g: Game, ctx: { benchCount: number; act: GameAc
 }
 
 function FinalBanner({ gameId }: { gameId: string }) {
+  const { state } = useStore();
+  const t = state.data.tickets[gameId];
+  const pins = t ? ticketView(state, t).pins : [];
   useEffect(() => {
     const t = setTimeout(() => scoreSeen.add(gameId), 1200);
     return () => clearTimeout(t);
@@ -163,6 +167,15 @@ function FinalBanner({ gameId }: { gameId: string }) {
       <div>
         <strong>Game final. Your ticket has been updated.</strong>
         <small>The final score was added to the same ticket you got before the game. It’s saved in your Passport.</small>
+        {pins.length > 0 && (
+          <span className="gd-new-pins">
+            {pins.map((p) => (
+              <span key={p.kind}>
+                <PinBadge kind={p.kind} season={p.season} size={30} /> New pin: {p.title}
+              </span>
+            ))}
+          </span>
+        )}
       </div>
     </div>
   );

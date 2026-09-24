@@ -21,7 +21,7 @@ export interface Prefs {
 }
 
 export interface AppState {
-  v: 2;
+  v: 3;
   scenario: ScenarioId;
   loadedAt: number;
   data: ScenarioData;
@@ -43,7 +43,7 @@ const DEFAULT_PREFS: Prefs = {
 
 export function initialState(scenario: ScenarioId = 'A', now = Date.now()): AppState {
   return {
-    v: 2,
+    v: 3,
     scenario,
     loadedAt: now,
     data: buildScenario(scenario, now),
@@ -66,7 +66,8 @@ export type Action =
   | { type: 'setLocation'; location: FanLocation }
   | { type: 'setPref'; key: keyof Prefs; value: boolean }
   | { type: 'recapSeen'; gameId: string }
-  | { type: 'toggleFollow'; teamId: string };
+  | { type: 'toggleFollow'; teamId: string }
+  | { type: 'spotlight'; gameId: string };
 
 export const MILESTONE_GAMES = [10, 25, 50, 75, 100, 150, 200];
 
@@ -156,6 +157,12 @@ export function reducer(state: AppState, action: Action): AppState {
     case 'setPref':
       return { ...state, prefs: { ...state.prefs, [action.key]: action.value } };
 
+    case 'spotlight': {
+      const t = data.tickets[action.gameId];
+      if (!t || t.fanOfGame) return state;
+      return { ...state, data: { ...data, tickets: { ...data.tickets, [t.gameId]: { ...t, fanOfGame: true } } } };
+    }
+
     case 'toggleFollow': {
       const followed = data.followed.includes(action.teamId) ? data.followed.filter((t) => t !== action.teamId) : [...data.followed, action.teamId];
       return { ...state, data: { ...data, followed } };
@@ -171,7 +178,7 @@ function load(): AppState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as AppState;
-      if (parsed?.v === 2 && parsed.data?.games) return parsed;
+      if (parsed?.v === 3 && parsed.data?.games) return parsed;
     }
   } catch {
     /* storage unavailable — fall through to a fresh demo */

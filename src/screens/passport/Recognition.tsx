@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useStore } from '../../state/store';
 import { allTickets, badges, fmt, teamName, totals } from '../../state/selectors';
 import type { Badge, Memory } from '../../data/types';
@@ -152,6 +153,9 @@ export function Memories() {
               {l}
             </button>
           ))}
+          <Link to="/passport/pins" className="chip">
+            Season pins →
+          </Link>
         </div>
         <div className="mem-grid">
           {list.map((m) => (

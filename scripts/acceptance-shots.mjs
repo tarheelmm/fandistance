@@ -188,6 +188,7 @@ for (const [route, name] of [
   ['leagues', 'passport-leagues'],
   ['stats', 'passport-stats'],
   ['add-team', 'passport-add-team'],
+  ['pins', 'passport-pin-board'],
   ['locker-room', 'locker-room'],
   ['locker-room/settings', 'locker-settings'],
 ]) {

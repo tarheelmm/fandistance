@@ -3,6 +3,7 @@ import { MILESTONE_GAMES } from './store';
 import type { ArtThemeId, Badge, Game, HistoryGame, MilestoneMark, SeatAssignment, Ticket } from '../data/types';
 import { TEAMS } from '../data/teams';
 import { sortKey } from '../data/history';
+import { awardPins, type Pin } from '../data/pins';
 
 /** Everything the Ticket component needs to draw one collectible ticket. */
 export interface TicketView {
@@ -28,11 +29,14 @@ export interface TicketView {
   fanTeamId: string;
   result?: 'W' | 'L';
   live?: boolean;
+  /** Season pins earned on this game, pinned to the ticket */
+  pins: Pin[];
+  fanOfGame?: boolean;
 }
 
 export const gameById = (s: AppState, id: string) => s.data.games.find((g) => g.id === id);
 
-export function ticketView(s: AppState, t: Ticket): TicketView {
+function baseTicketView(s: AppState, t: Ticket): TicketView {
   const g = gameById(s, t.gameId)!;
   const fanTeamId = s.data.followed.includes(g.homeId) ? g.homeId : g.awayId;
   const fs = t.finalScore;
@@ -59,14 +63,21 @@ export function ticketView(s: AppState, t: Ticket): TicketView {
     fanTeamId,
     result,
     live: g.status === 'live',
+    pins: [],
+    fanOfGame: t.fanOfGame,
   };
+}
+
+export function ticketView(s: AppState, t: Ticket): TicketView {
+  const v = baseTicketView(s, t);
+  return { ...v, pins: pinsIndex(s).get(v.id) ?? [] };
 }
 
 const DOW = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 const MONTH_IDX: Record<string, number> = { Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9 };
 
 /** Historical ticket, rebuilt from history. Earned marks are derived from its ordinal. */
-export function historyTicketView(h: HistoryGame, ordinal: number): TicketView {
+export function historyTicketView(h: HistoryGame, ordinal: number, fanOfGame = false): TicketView {
   const [mon, day] = h.date.split(' ');
   const d = new Date(Number(h.season), MONTH_IDX[mon], Number(day));
   const [a, b] = h.score.split('-').map(Number);
@@ -105,17 +116,53 @@ export function historyTicketView(h: HistoryGame, ordinal: number): TicketView {
     marks,
     fanTeamId: h.teamId,
     result: h.result,
+    pins: [],
+    fanOfGame,
   };
+}
+
+function baseTickets(s: AppState): TicketView[] {
+  const spot = new Set(s.data.spotlights ?? []);
+  const chronological = [...s.data.history].sort((a, b) => sortKey(a) - sortKey(b));
+  const past = chronological.map((h, i) => historyTicketView(h, i + 1, spot.has(h.id))).reverse();
+  const current = Object.values(s.data.tickets)
+    .sort((a, b) => b.issuedAt - a.issuedAt)
+    .map((t) => baseTicketView(s, t));
+  return [...current, ...past];
+}
+
+const pinCache = new WeakMap<object, Map<string, Pin[]>>();
+
+/** Season pins for every ticket, derived from the fan's full ticket history. */
+export function pinsIndex(s: AppState): Map<string, Pin[]> {
+  const hit = pinCache.get(s.data);
+  if (hit) return hit;
+  const idx = awardPins(
+    baseTickets(s).map((v) => ({
+      id: v.id,
+      teamId: v.fanTeamId,
+      opponentId: v.fanTeamId === v.homeId ? v.awayId : v.homeId,
+      home: v.fanTeamId === v.homeId,
+      season: v.season,
+      date: v.shortDate,
+      sortKey: sortKey({ season: v.season, date: v.shortDate }),
+      final: !!v.finalScore,
+      fanOfGame: !!v.fanOfGame,
+    })),
+  );
+  pinCache.set(s.data, idx);
+  return idx;
 }
 
 /** Every ticket the fan has ever collected, newest first. */
 export function allTickets(s: AppState): TicketView[] {
-  const chronological = [...s.data.history].sort((a, b) => sortKey(a) - sortKey(b));
-  const past = chronological.map((h, i) => historyTicketView(h, i + 1)).reverse();
-  const current = Object.values(s.data.tickets)
-    .sort((a, b) => b.issuedAt - a.issuedAt)
-    .map((t) => ticketView(s, t));
-  return [...current, ...past];
+  const idx = pinsIndex(s);
+  return baseTickets(s).map((v) => ({ ...v, pins: idx.get(v.id) ?? [] }));
+}
+
+/** All pins earned, newest first. */
+export function allPins(s: AppState): Pin[] {
+  return allTickets(s).flatMap((t) => t.pins);
 }
 
 export function totals(s: AppState) {

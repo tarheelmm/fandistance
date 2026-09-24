@@ -69,3 +69,45 @@ describe('approved Orioles artwork', () => {
     for (const t of openers) expect(t.artImage).toBe('opening-day');
   });
 });
+
+describe('season pins', () => {
+  const finalA = () => {
+    let s = initialState('A', 1000);
+    s = reducer(s, { type: 'issueTicket', gameId: GAME, now: 2000 });
+    return reducer(s, { type: 'setGameStatus', gameId: GAME, status: 'final' });
+  };
+
+  it('pins nothing to tonight’s ticket until the game is final', () => {
+    let s = initialState('A', 1000);
+    s = reducer(s, { type: 'issueTicket', gameId: GAME, now: 2000 });
+    expect(allTickets(s)[0].pins).toEqual([]);
+  });
+
+  it('pins the 10th game of the season to tonight’s ticket once it is final', () => {
+    const t = allTickets(finalA())[0];
+    expect(t.pins.map((p) => p.title)).toContain('10th Game of 2027');
+  });
+
+  it('pins the first game of each season to that season’s opener', () => {
+    const bal = allTickets(finalA()).filter((t) => t.fanTeamId === 'BAL');
+    for (const season of ['2026', '2027']) {
+      const opener = bal.filter((t) => t.season === season).at(-1)!;
+      expect(opener.pins.map((p) => p.kind)).toContain('opener');
+    }
+  });
+
+  it('adds a Fan of the Game pin to the same ticket when the fan is spotlighted', () => {
+    let s = finalA();
+    const before = s.data.tickets[GAME];
+    s = reducer(s, { type: 'spotlight', gameId: GAME });
+    const t = allTickets(s)[0];
+    expect(t.pins.map((p) => p.kind)).toEqual(expect.arrayContaining(['games-10', 'fan-of-game']));
+    expect(s.data.tickets[GAME].artImage).toBe(before.artImage);
+    expect(Object.keys(s.data.tickets)).toHaveLength(1);
+  });
+
+  it('shows past Fan of the Game pins in the established fan’s passport (scenario F)', () => {
+    const pins = allTickets(initialState('F', 1000)).flatMap((t) => t.pins);
+    expect(pins.filter((p) => p.kind === 'fan-of-game')).toHaveLength(2);
+  });
+});
