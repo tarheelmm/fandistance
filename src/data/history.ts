@@ -3,7 +3,7 @@ import { TEAMS } from './teams';
 import { orioleArtFor } from './artwork';
 
 /** Deterministic PRNG so demo history is identical on every load. */
-function mulberry32(seed: number) {
+export function mulberry32(seed: number) {
   return () => {
     seed |= 0;
     seed = (seed + 0x6d2b79f5) | 0;
@@ -94,7 +94,7 @@ export function buildHistory(specs: HistorySpec[], seed = 7): HistoryGame[] {
     if (h.teamId !== 'BAL') continue;
     const opener = !openers.has(h.season);
     openers.add(h.season);
-    h.artImage = orioleArtFor(h, opener);
+    h.artImage = orioleArtFor(h, opener, seed);
   }
   // newest first
   return out.sort((a, b) => sortKey(b) - sortKey(a));

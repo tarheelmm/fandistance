@@ -40,7 +40,7 @@ export function DemoControls({ onRestart }: { onRestart: () => void }) {
 
   const games = state.data.games.filter((g) => g.status !== 'scheduled');
   const load = (id: (typeof SCENARIOS)[number]['id']) => {
-    dispatch({ type: 'loadScenario', id, now: Date.now() });
+    dispatch({ type: 'loadScenario', id, now: Date.now(), seed: freshSeed() });
     setOpen(false);
     navigate('/', { replace: true });
   };
@@ -146,7 +146,7 @@ export function DemoControls({ onRestart }: { onRestart: () => void }) {
             <button
               className="demo-restart"
               onClick={() => {
-                dispatch({ type: 'loadScenario', id: state.scenario, now: Date.now() });
+                dispatch({ type: 'loadScenario', id: state.scenario, now: Date.now(), seed: freshSeed() });
                 setOpen(false);
                 onRestart();
               }}
@@ -177,3 +177,6 @@ function writeFlag(key: string) {
     /* storage unavailable: the hint just shows again next launch */
   }
 }
+
+/** Every demo run gets its own seed, so tickets, seats and history differ each time. */
+const freshSeed = () => Math.floor(Math.random() * 2 ** 31);
