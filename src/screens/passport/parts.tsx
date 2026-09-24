@@ -44,7 +44,7 @@ export function Stub({ t }: { t: TicketView }) {
     <Link
       to={`/passport/ticket/${t.id}`}
       className="stub"
-      aria-label={`${t.shortDate}, ${t.season}: ${home ? 'vs' : 'at'} ${opp.city} ${opp.name}${fs ? `, ${t.result === 'W' ? 'win' : 'loss'} ${fanScore}–${oppScore}` : ''}`}
+      aria-label={`${t.shortDate}, ${t.season}: ${home ? 'vs' : 'at'} ${opp.city}${fs ? `, ${t.result === 'W' ? 'win' : 'loss'} ${fanScore}–${oppScore}` : ''}`}
     >
       <div className="stub-info">
         <b>{t.shortDate.toUpperCase()}</b>
@@ -53,7 +53,7 @@ export function Stub({ t }: { t: TicketView }) {
         </span>
         {fs ? (
           <span className={`stub-res ${t.result === 'W' ? 'w' : 'l'}`}>
-            {t.result} {fanScore}-{oppScore}
+            {t.result} {fanScore}–{oppScore}
           </span>
         ) : (
           <span className="stub-res live">{t.live ? 'LIVE' : 'TODAY'}</span>
@@ -132,9 +132,10 @@ export function BadgeMedal({ b, size = 64 }: { b: Badge; size?: number }) {
   );
 }
 
-export function SectionTitle({ title, to, link }: { title: string; to?: string; link?: string }) {
+/** `jid` makes the section a Passport jump-bar target (`#jump-<jid>`). */
+export function SectionTitle({ title, to, link, jid }: { title: string; to?: string; link?: string; jid?: string }) {
   return (
-    <div className="section-title">
+    <div className="section-title" id={jid ? `jump-${jid}` : undefined}>
       <h2>{title}</h2>
       {to && <Link to={to}>{link ?? 'See all'}</Link>}
     </div>

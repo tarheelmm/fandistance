@@ -9,7 +9,8 @@
     "preview": "vite preview --host",
     "typecheck": "tsc -b",
     "test": "vitest run",
-    "shots": "node scripts/acceptance-shots.mjs && node scripts/compare-sheets.mjs"
+    "shots": "node scripts/acceptance-shots.mjs && node scripts/compare-sheets.mjs",
+    "verify:v11": "node scripts/verify-v11.mjs"
   },
   "dependencies": {
     "@fontsource/bebas-neue": "^5.3.0",

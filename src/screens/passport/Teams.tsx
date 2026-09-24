@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { gamesLabel, gamesMiles } from '../../state/format';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useStore } from '../../state/store';
 import { allTickets, fmt, teamName, teamStats } from '../../state/selectors';
@@ -68,8 +69,7 @@ export function Teams() {
                 <span className="grow">
                   <strong>{teamName(id)}</strong>
                   <small>
-                    {TEAMS[id].league} · {st.games} game{st.games === 1 ? '' : 's'}
-                    {st.games ? ` · ${fmt(st.miles)} miles` : ''}
+                    {TEAMS[id].league} · {gamesMiles(st.games, st.miles)}
                   </small>
                 </span>
                 <Icon name="chevron" size={18} />
@@ -131,7 +131,7 @@ export function TeamHome() {
                   <strong>
                     {st.wins}–{st.losses} when you represented
                   </strong>
-                  <small>Record across {st.games} games</small>
+                  <small>Record across {gamesLabel(st.games)}</small>
                 </span>
               </div>
               {st.seasons.map((s) => {
@@ -142,7 +142,7 @@ export function TeamHome() {
                     <span className="grow">
                       <strong>{s} season</strong>
                       <small>
-                        {ts.length} games · {ts.filter((t) => t.result === 'W').length}–{ts.filter((t) => t.result === 'L').length} ·{' '}
+                        {gamesLabel(ts.length)} · {ts.filter((t) => t.result === 'W').length}–{ts.filter((t) => t.result === 'L').length} ·{' '}
                         {fmt(ts.reduce((n, t) => n + t.distanceMiles, 0))} miles
                       </small>
                     </span>
@@ -153,7 +153,7 @@ export function TeamHome() {
             </div>
           </>
         ) : (
-          <p className="p-empty">No games represented with the {team.name} yet. Your first ticket will start this book.</p>
+          <p className="p-empty">No games represented with {teamName(teamId)} yet. Your first ticket will start this book.</p>
         )}
       </div>
     </main>

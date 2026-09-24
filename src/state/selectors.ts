@@ -252,7 +252,8 @@ export function badges(s: AppState): Badge[] {
   ];
 }
 
-export const teamName = (id: string) => `${TEAMS[id].city} ${TEAMS[id].name}`.replace('Charlotte Charlotte FC', 'Charlotte FC');
+/** A team is its city; its full name is city + sport ("Baltimore Baseball"). */
+export const teamName = (id: string) => `${TEAMS[id].city} ${TEAMS[id].name}`;
 
 export const seatLine = (seat: SeatAssignment) => (seat.kind === 'seat' ? `Section ${seat.section} • Row ${seat.row} • Seat ${seat.seat}` : 'Standing Room Only');
 

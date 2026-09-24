@@ -1,6 +1,6 @@
 /**
  * Season pins: collectible memories earned on a specific game and pinned to that game's ticket.
- * Pins are scoped to one team's season (first game of the 2027 Orioles season, 10th game, …).
+ * Pins are scoped to one team's season (first game of the 2027 Baltimore Baseball season, 10th game, …).
  * They recognize participation; none of them rank fans against each other.
  */
 export type PinKind = 'opener' | 'games-10' | 'games-25' | 'games-50' | 'fan-of-game' | 'rivalry' | 'july-4th' | 'road-trip';

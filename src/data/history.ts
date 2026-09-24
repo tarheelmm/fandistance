@@ -88,7 +88,7 @@ export function buildHistory(specs: HistorySpec[], seed = 7): HistoryGame[] {
       });
     });
   }
-  // Orioles tickets carry the approved Baltimore artwork concepts
+  // Baltimore Baseball tickets carry the approved Baltimore artwork concepts
   const openers = new Set<string>();
   for (const h of [...out].sort((a, b) => sortKey(a) - sortKey(b))) {
     if (h.teamId !== 'BAL') continue;

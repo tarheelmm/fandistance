@@ -140,9 +140,9 @@
   margin-top: 16px;
   padding: 14px;
   border-radius: 14px;
-  background: #fff6ea;
-  border: 1px solid #f7d6b3;
-  color: #7a3a0e;
+  background: color-mix(in srgb, var(--md-orange) 14%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--md-orange) 40%, transparent);
+  color: #ffd3b0;
 }
 
 .gd-final-banner div {
@@ -156,7 +156,7 @@
 
 .gd-final-banner small {
   font-size: 12px;
-  color: #8a5a3a;
+  color: #e9b891;
 }
 
 /* Destinations within tonight’s game */
@@ -175,7 +175,7 @@
   min-height: 132px;
   padding: 14px;
   border-radius: 16px;
-  background: radial-gradient(90% 70% at 100% 0%, color-mix(in srgb, var(--c) 14%, transparent), transparent 70%), var(--surface);
+  background: radial-gradient(90% 70% at 100% 0%, color-mix(in srgb, var(--c) 20%, transparent), transparent 70%), var(--surface);
   border: 1px solid var(--line);
   box-shadow: 0 6px 18px -12px rgba(13, 27, 61, 0.35);
   overflow: hidden;
@@ -193,7 +193,7 @@
   place-items: center;
   border-radius: 14px;
   color: var(--c);
-  background: color-mix(in srgb, var(--c) 12%, #fff);
+  background: color-mix(in srgb, var(--c) 22%, var(--surface-2));
   margin-bottom: 6px;
 }
 
@@ -203,7 +203,7 @@
   font-size: 22px;
   letter-spacing: 0.04em;
   line-height: 1;
-  color: var(--fd-navy);
+  color: var(--text);
   text-transform: uppercase;
 }
 
@@ -235,7 +235,7 @@
 .gd-empty h2 {
   font-size: 40px;
   margin: 8px 0 10px;
-  color: var(--fd-navy);
+  color: var(--text);
 }
 
 .gd-empty p {
@@ -255,7 +255,7 @@
 }
 
 .area-bar h1 {
-  color: var(--fd-navy);
+  color: var(--text);
   font-size: 22px;
 }
 
@@ -289,7 +289,7 @@
   font-weight: 400;
   font-size: 22px;
   letter-spacing: 0.04em;
-  color: var(--fd-navy);
+  color: var(--text);
 }
 
 .gd-new-pins {
@@ -304,5 +304,5 @@
   gap: 8px;
   font-size: 13px;
   font-weight: 800;
-  color: #7a3a0e;
+  color: #ffb36b;
 }

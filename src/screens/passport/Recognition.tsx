@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { gamesLabel, gamesMiles } from '../../state/format';
 import { Link } from 'react-router-dom';
 import { useStore } from '../../state/store';
 import { allTickets, badges, fmt, teamName, totals } from '../../state/selectors';
@@ -83,7 +84,7 @@ export function FanStats() {
             <Icon name="map" size={22} />
             <span className="grow">
               <strong>Beyond the venue</strong>
-              <small>{games - venue} games represented from somewhere else</small>
+              <small>{gamesLabel(games - venue)} represented from somewhere else</small>
             </span>
           </div>
           <div className="row-link">
@@ -96,7 +97,7 @@ export function FanStats() {
             </span>
           </div>
         </div>
-        <SectionTitle title="Memorable games" />
+        <SectionTitle title="Big games" />
         <MemorableGames />
         <SectionTitle title="By team" />
         <div className="card p-list">
@@ -108,7 +109,10 @@ export function FanStats() {
                 <span className="grow">
                   <strong>{teamName(id)}</strong>
                   <small>
-                    {ts.length} games · {fmt(ts.reduce((n, t) => n + t.distanceMiles, 0))} miles
+                    {gamesMiles(
+                      ts.length,
+                      ts.reduce((n, t) => n + t.distanceMiles, 0),
+                    )}
                   </small>
                 </span>
               </div>

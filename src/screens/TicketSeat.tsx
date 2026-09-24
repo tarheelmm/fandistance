@@ -26,7 +26,7 @@ export function TicketSeat() {
   };
 
   return (
-    <main className="screen no-nav theme-light ts-screen">
+    <main className="screen no-nav theme-dark ts-screen">
       <div className="topbar">
         <button className="icon-btn" onClick={back} aria-label="Back">
           <Icon name="back" />
@@ -86,7 +86,7 @@ export function TicketSeat() {
           {game.status === 'final' ? 'View Game Day' : 'Enter Game Day'}
         </button>
         <p className="ts-saved">
-          <Icon name="check" size={14} stroke={2.6} /> You can close the app anytime. Your ticket and seat are saved.
+          <Icon name="check" size={14} stroke={2.6} /> You’re counted for this game. Stay for Game Day or close the app — your attendance is on record.
         </p>
       </div>
     </main>

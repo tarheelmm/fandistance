@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { gamesMiles, matchupAbbr, plural, scoreLine, scorePair } from '../../state/format';
 import { useStore } from '../../state/store';
 import { allPins, allTickets, badges, fmt, teamName, teamStats, totals } from '../../state/selectors';
 import { TEAMS } from '../../data/teams';
@@ -9,6 +10,8 @@ import { Ticket } from '../../components/Ticket';
 import { Scene } from '../../components/Scene';
 import { PinBadge } from '../../components/PinBadge';
 import { BadgeMedal, SectionTitle, Stat, Stub } from './parts';
+import { PassportJump } from './PassportJump';
+import { TeamPerks } from './TeamPerks';
 
 /** PASSPORT = my fandom history. */
 export function PassportHome() {
@@ -30,6 +33,8 @@ export function PassportHome() {
       </div>
 
       <div className="wrap">
+        <PassportJump />
+
         {/* Passport cover: identity */}
         <section className="p-cover" aria-label="Fan identity">
           <div className="p-cover-top">
@@ -51,43 +56,50 @@ export function PassportHome() {
           </div>
         </section>
 
-        <div className="p-stats">
+        <div className="p-stats" id="jump-stats">
           <Stat value={fmt(games)} label="Games represented" accent />
           <Stat value={fmt(miles)} label="Miles represented" accent />
           <Stat value={seasons.length} label={seasons.length === 1 ? 'Season represented' : 'Seasons represented'} />
           <Stat value={state.data.followed.length} label="Teams you follow" />
         </div>
         <p className="p-span">
-          {leagues.length} leagues · {sports} sports · {seasons.join(' & ')}
+          {plural(leagues.length, 'league')} · {plural(sports, 'sport')} · {seasons.join(' & ')}
         </p>
+
+        <SectionTitle jid="recognition" title="Recognition" to="/passport/recognition" link={`${earned.length} earned`} />
+        <Link to="/passport/recognition" className="p-badges card" aria-label="See your recognition">
+          {earned.slice(0, 5).map((b) => (
+            <BadgeMedal key={b.id} b={b} size={54} />
+          ))}
+        </Link>
+        <p className="p-principle">Recognized for your story, not a score. No points. No leaderboards.</p>
+
+        <SectionTitle jid="perks" title="Team perks" />
+        <TeamPerks tickets={tickets} season={seasons[0]} />
 
         {latest && (
           <>
-            <SectionTitle title="Recent activity" to={`/passport/ticket/${latest.id}`} link="Game story" />
+            <SectionTitle jid="recent" title="Last game" to={`/passport/ticket/${latest.id}`} link="Game story" />
             <Link to={`/passport/ticket/${latest.id}`} className="p-recent card">
               <div className="p-recent-t">
                 <Ticket view={latest} lite />
               </div>
               <div className="p-recent-body">
                 {latest.finalScore ? (
-                  <div className="p-recent-score display">
-                    {TEAMS[latest.homeId].abbr} {latest.finalScore.home} · {TEAMS[latest.awayId].abbr} {latest.finalScore.away}
-                  </div>
+                  <div className="p-recent-score display">{scorePair(latest).join(' · ')}</div>
                 ) : (
-                  <div className="p-recent-score display">
-                    {TEAMS[latest.homeId].abbr} vs {TEAMS[latest.awayId].abbr}
-                  </div>
+                  <div className="p-recent-score display">{matchupAbbr(latest)}</div>
                 )}
                 <small>
                   {latest.shortDate}, {latest.season} · {latest.finalScore ? 'Final' : latest.live ? 'Live' : 'Today'}
                 </small>
-                <span className="p-recent-cta">View last game recap →</span>
+                <span className="p-recent-cta">View game story</span>
               </div>
             </Link>
           </>
         )}
 
-        <SectionTitle title="Ticket book" to="/passport/tickets" link={`All ${tickets.length}`} />
+        <SectionTitle jid="tickets" title="Ticket book" to="/passport/tickets" link={`All ${tickets.length}`} />
         <div className="p-book-strip" role="list">
           {tickets.slice(0, 8).map((t) => (
             <div role="listitem" key={t.id}>
@@ -96,7 +108,10 @@ export function PassportHome() {
           ))}
         </div>
 
-        <SectionTitle title="Seasons" />
+        <SectionTitle jid="moments" title="Big games" to="/passport/stats" link="Fan stats" />
+        <MemorableGames />
+
+        <SectionTitle jid="seasons" title="Seasons" />
         <div className="card p-list">
           {seasons.map((s) => {
             const ts = tickets.filter((t) => t.season === s);
@@ -105,7 +120,10 @@ export function PassportHome() {
                 <span className="p-season-yr display">{s}</span>
                 <span className="grow">
                   <strong>
-                    {ts.length} games · {fmt(ts.reduce((n, t) => n + t.distanceMiles, 0))} miles
+                    {gamesMiles(
+                      ts.length,
+                      ts.reduce((n, t) => n + t.distanceMiles, 0),
+                    )}
                   </strong>
                   <small>{[...new Set(ts.map((t) => TEAMS[t.fanTeamId].league))].join(' · ')}</small>
                 </span>
@@ -115,7 +133,7 @@ export function PassportHome() {
           })}
         </div>
 
-        <SectionTitle title="Your teams" to="/passport/teams" link="All teams" />
+        <SectionTitle jid="teams" title="Your teams" to="/passport/teams" link="All teams" />
         <div className="card p-list">
           {state.data.followed.slice(0, 4).map((id) => {
             const st = teamStats(state, id);
@@ -125,7 +143,7 @@ export function PassportHome() {
                 <span className="grow">
                   <strong>{teamName(id)}</strong>
                   <small>
-                    {TEAMS[id].league} · {st.games} games · {fmt(st.miles)} miles
+                    {TEAMS[id].league} · {gamesMiles(st.games, st.miles)}
                   </small>
                 </span>
                 <Icon name="chevron" size={18} />
@@ -142,21 +160,10 @@ export function PassportHome() {
           </Link>
         </div>
 
-        <SectionTitle title="Recognition" to="/passport/recognition" link={`${earned.length} earned`} />
-        <Link to="/passport/recognition" className="p-badges card" aria-label="See your recognition">
-          {earned.slice(0, 5).map((b) => (
-            <BadgeMedal key={b.id} b={b} size={54} />
-          ))}
-        </Link>
-        <p className="p-principle">Recognized for your story, not a score. No points. No leaderboards.</p>
-
-        <SectionTitle title="Memorable games" to="/passport/stats" link="Fan stats" />
-        <MemorableGames />
-
-        <SectionTitle title="Season pins" to="/passport/pins" link="Pin board" />
+        <SectionTitle jid="pins" title="Season pins" to="/passport/pins" link="Pin board" />
         <SeasonPins season={seasons[0]} />
 
-        <SectionTitle title="Memories" to="/passport/memories" />
+        <SectionTitle jid="memories" title="Memories" to="/passport/memories" />
         <div className="p-mem-grid">
           {state.data.memories.slice(0, 6).map((m) => (
             <Link to="/passport/memories" key={m.id} className="p-mem" aria-label={m.title}>
@@ -165,7 +172,7 @@ export function PassportHome() {
           ))}
         </div>
 
-        <Link to="/passport/locker-room" className="p-locker card">
+        <Link to="/passport/locker-room" className="p-locker card" id="jump-locker">
           <Icon name="locker" size={30} />
           <span className="grow">
             <strong>Locker Room</strong>
@@ -201,8 +208,7 @@ export function MemorableGames() {
           <span className="grow">
             <strong>{title}</strong>
             <small>
-              {t.shortDate}, {t.season} · {TEAMS[t.awayId].abbr} @ {TEAMS[t.homeId].abbr}
-              {t.finalScore ? ` · ${t.finalScore.away}–${t.finalScore.home}` : ''}
+              {t.shortDate}, {t.season} · {scoreLine(t)}
             </small>
           </span>
           <Icon name="chevron" size={18} />

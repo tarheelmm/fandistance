@@ -1,7 +1,7 @@
 import type { HistoryGame } from './types';
 
 /**
- * Approved Baltimore Orioles ticket art concepts (docs/storyboards/06-orioles-ticket-art-concepts.png).
+ * Approved Baltimore Baseball ticket art concepts (docs/storyboards/06-orioles-ticket-art-concepts.png).
  * The sheet marks these as art direction; final artwork is produced per game for the 2027 season.
  * Until those masters arrive, each concept is cut from the approved sheet into public/art/orioles/.
  * `focus` is the object-position used when the landscape concept fills the portrait ticket.
@@ -24,7 +24,7 @@ const A = (n: number, id: string, title: string, focus = '50% 50%'): Artwork => 
 
 export const ORIOLES_ART: Artwork[] = [
   A(1, 'camden-yards', 'Camden Yards Icon', '38% 50%'),
-  A(2, 'orioles-player', 'Orioles Player', '42% 50%'),
+  A(2, 'orioles-player', 'Baltimore Player', '42% 50%'),
   A(3, 'pitcher-on-the-mound', 'Pitcher on the Mound', '48% 50%'),
   A(4, 'city-skyline', 'City Skyline', '52% 50%'),
   A(5, 'inner-harbor', 'Inner Harbor', '30% 50%'),
@@ -36,7 +36,7 @@ export const ORIOLES_ART: Artwork[] = [
   A(11, 'fort-mchenry', 'Fort McHenry / Flag', '45% 50%'),
   A(12, 'chesapeake-bay', 'Chesapeake Bay', '70% 50%'),
   A(13, 'stadium-night-lights', 'Stadium Night Lights', '50% 50%'),
-  A(14, 'orioles-raven', 'Orioles Raven', '55% 50%'),
+  A(14, 'orioles-raven', 'Baltimore Bird', '55% 50%'),
   A(15, 'baseball-still-life', 'Baseball Still Life', '45% 50%'),
   A(16, 'history-heritage', 'History & Heritage', '65% 50%'),
   A(17, 'harbor-ship-heritage', 'Harbor Ship Heritage', '40% 50%'),
@@ -64,7 +64,7 @@ function hash(s: string) {
   return h >>> 0;
 }
 
-/** Picks the concept for a past Orioles game: event art for its moment, otherwise a stable rotation. */
+/** Picks the concept for a past Baltimore Baseball game: event art for its moment, otherwise a stable rotation. */
 export function orioleArtFor(h: HistoryGame, isSeasonOpener: boolean): string {
   if (isSeasonOpener) return 'opening-day';
   if (h.date === 'Jul 4') return 'july-4th-fireworks';

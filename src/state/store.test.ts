@@ -61,8 +61,8 @@ describe('ticket lifecycle: one game = one ticket', () => {
   });
 });
 
-describe('approved Orioles artwork', () => {
-  it('gives every past Orioles ticket an approved concept, with Opening Day on each season opener', () => {
+describe('approved Baltimore Baseball artwork', () => {
+  it('gives every past Baltimore Baseball ticket an approved concept, with Opening Day on each season opener', () => {
     const book = allTickets(initialState('F', 1000)).filter((t) => t.fanTeamId === 'BAL');
     expect(book.every((t) => t.artImage)).toBe(true);
     const openers = ['2026', '2027'].map((season) => book.filter((t) => t.season === season).at(-1)!);

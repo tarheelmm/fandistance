@@ -15,27 +15,10 @@
   fill: #1c2436;
 }
 
-.theme-light .sm-shell {
-  fill: #d5dae4;
-}
-
 .sm-sec {
   fill: #3b4760;
   stroke: #1c2436;
   stroke-width: 0.6;
-}
-
-.theme-light .sm-sec {
-  fill: #aeb7c7;
-  stroke: #e7ebf2;
-}
-
-.theme-light .sm-sec.lv2 {
-  fill: #c3cad6;
-}
-
-.theme-light .sm-sec.lv0 {
-  fill: #b9c1ce;
 }
 
 .sm-sec.is-mine {

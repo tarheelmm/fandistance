@@ -82,7 +82,7 @@ export function Ticket({ view, phase = 'static', printMs = 2800, stampIn, scoreI
 
           <div className="ticket-title">
             <div className="ticket-matchup">
-              {away.name.toUpperCase()} @ {home.name.toUpperCase()}
+              {away.short.toUpperCase()} @ {home.short.toUpperCase()}
             </div>
             <div className="ticket-when">
               {view.dateLabel} • {view.timeLabel}
@@ -150,7 +150,7 @@ export function Ticket({ view, phase = 'static', printMs = 2800, stampIn, scoreI
 function ticketLabel(v: TicketView, seatShown: boolean) {
   const home = TEAMS[v.homeId];
   const away = TEAMS[v.awayId];
-  const parts = [`${away.name} at ${home.name}`, v.dateLabel, v.timeLabel, v.venue];
+  const parts = [`${away.short} at ${home.short}`, v.dateLabel, v.timeLabel, v.venue];
   if (seatShown) parts.push(v.seat.kind === 'seat' ? `Section ${v.seat.section}, Row ${v.seat.row}, Seat ${v.seat.seat}` : 'Standing Room Only');
   if (v.checkedIn) parts.push('Checked in');
   if (v.finalScore) parts.push(`Final: ${away.short} ${v.finalScore.away}, ${home.short} ${v.finalScore.home}`);

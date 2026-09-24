@@ -1085,3 +1085,142 @@
 .td-pins li {
   gap: 12px;
 }
+
+/* sticky jump bar */
+.p-jump {
+  position: sticky;
+  top: calc(52px + var(--safe-top));
+  z-index: 15;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 calc(-1 * var(--gutter)) 4px;
+  padding: 8px var(--gutter);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.p-jump::-webkit-scrollbar {
+  display: none;
+}
+
+.p-jump-chip {
+  flex: none;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.p-jump-chip[aria-current='true'] {
+  color: #1a0d05;
+  background: var(--md-orange);
+  border-color: var(--md-orange);
+}
+
+.passport [id^='jump-'] {
+  scroll-margin-top: calc(112px + var(--safe-top));
+}
+
+/* team perks preview */
+.p-perks {
+  padding: 16px;
+  display: grid;
+  gap: 14px;
+  border: 1px solid color-mix(in srgb, var(--md-orange) 35%, var(--line));
+}
+
+.p-perks-lede {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.p-perks-count {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.p-perks-count b {
+  font-size: 48px;
+  line-height: 0.9;
+  color: var(--md-orange);
+}
+
+.p-perks-count span {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.p-perks-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.p-perks-list li {
+  display: grid;
+  gap: 4px;
+}
+
+.p-perks-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.p-perks-row strong {
+  font-size: 14px;
+}
+
+.p-perks-row small {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.p-perks-list li.met .p-perks-row small {
+  color: var(--ok);
+}
+
+.p-perks-list p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.p-perks-bar {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.p-perks-bar i {
+  display: block;
+  height: 100%;
+  background: var(--md-orange);
+  border-radius: 3px;
+}
+
+.p-perks-note {
+  margin: 0;
+  font-size: 11.5px;
+  color: var(--muted);
+}

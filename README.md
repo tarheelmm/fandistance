@@ -39,9 +39,15 @@ ISSUED → CHECKED IN (stamp) → GAME FINAL (score added) → MILESTONE MOMENT 
 
 The ticket is issued the moment the fan taps the notification or an eligible game, so leaving mid-print keeps it. The ticket issued before the game becomes the permanent Ticket Book entry in Passport. See `src/state/store.tsx` and `src/state/store.test.ts`.
 
+## Naming and theme (v1.1)
+
+A team is its city, and its full name is city plus sport: Baltimore Baseball, Carolina Hockey. Tickets read `AWAY @ HOME` by city, and short labels use abbreviations (BAL, BOS). Venue names stay as real place names. Every consumer screen uses the dark navy and orange theme; only the reviewer demo sheet stays light.
+
+Scores are always written from the fan's side ("W 7–2 vs New York"), and counts pluralize correctly. The helpers for both are in `src/state/format.ts`.
+
 ## Ticket artwork
 
-Orioles tickets use the 24 approved Baltimore art concepts. Each game's concept is chosen when the ticket is issued and never changes. Opening Day goes on each season opener, July 4th Fireworks on July 4 games, Rivalry Series on the Yankees games, and Giveaway Day on giveaway nights. Every other game gets one of the remaining concepts, picked the same way each time.
+Baltimore Baseball tickets use the 24 approved Baltimore art concepts. Each game's concept is chosen when the ticket is issued and never changes. Opening Day goes on each season opener, July 4th Fireworks on July 4 games, Rivalry Series on the Yankees games, and Giveaway Day on giveaway nights. Every other game gets one of the remaining concepts, picked the same way each time.
 
 The images in `public/art/orioles/` are cut from the approved concept sheet, so they are low resolution (about 185×113 px each). To swap in final artwork, replace a file with the same name, or add a new entry to `ORIOLES_ART`. Concept 24, Last Home Game, isn't included yet because the supplied sheet has a screen overlay across it. Other teams still use the generated posters in `TicketArt.tsx`.
 
@@ -57,6 +63,10 @@ Pins are collectible memories from a season. Each one is pinned to the ticket of
 - **July 4th**
 
 Every pin except Fan of the Game is added once the game is final. Pins recognize participation. They aren't points and they aren't ranked. The rules are in `src/data/pins.ts`, and `src/components/PinBadge.tsx` draws the enamel-pin art.
+
+## Passport jump bar and Team Perks
+
+Passport home runs in this order: Stats, Recognition, Team perks, Last game, Ticket book, Big games, Seasons, Teams, Pins, Memories, Locker Room. A sticky jump bar under the header (`PassportJump`) scrolls to each section and highlights the section you're in as you scroll. Team Perks (`TeamPerks`) previews what a season's attendance record could earn at 10, 25 and 50 games. It's labeled as a preview because no team offers perks yet.
 
 ## Demo controls
 
@@ -77,6 +87,7 @@ State persists in `localStorage`, so a reload keeps tickets and seats.
 ```bash
 npm run build && npx vite preview --port 4173 &
 npm run shots
+npm run verify:v11   # v1.1 handoff checklist, scenario A at 390 px
 ```
 
 `scripts/acceptance-shots.mjs` drives the real app at 390×844 with simulated safe areas. It captures every storyboard screen, and captures the launch and print sequences frame by frame using a frozen clock and scrubbed CSS animations. `scripts/compare-sheets.mjs` then places each render beside its storyboard crop in `acceptance/compare/`.

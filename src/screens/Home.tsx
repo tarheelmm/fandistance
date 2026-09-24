@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { gamesLabel, plural, scorePair } from '../state/format';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../state/store';
-import { eligibleGames, fmt, lastGame, minutesUntil, nextGame, seatLine, ticketedToday, ticketView, totals } from '../state/selectors';
+import { eligibleGames, fmt, lastGame, minutesUntil, nextGame, seatLine, teamName, ticketedToday, ticketView, totals } from '../state/selectors';
 import { useNow } from '../state/hooks';
 import { TEAMS } from '../data/teams';
 import type { Game } from '../data/types';
@@ -55,11 +56,7 @@ export function Home() {
               <strong>
                 {eligible.length} more game{eligible.length > 1 ? 's' : ''} {eligible.length > 1 ? 'are' : 'is'} ready
               </strong>
-              <small>
-                {eligible
-                  .map((g) => `${TEAMS[g.homeId].short} ${TEAMS[g.homeId].sport === 'football' ? 'Football' : TEAMS[g.homeId].name} · ${g.timeLabel.replace(' ET', '')}`)
-                  .join('  •  ')}
-              </small>
+              <small>{eligible.map((g) => `${teamName(g.homeId)} · ${g.timeLabel.replace(' ET', '')}`).join('  •  ')}</small>
               <button className="mr-cta" onClick={() => getTicket(eligible[0])}>
                 Get {eligible.length > 1 ? 'their tickets' : 'your ticket'} →
               </button>
@@ -86,7 +83,7 @@ export function Home() {
                       {TEAMS[g.homeId].short} vs {TEAMS[g.awayId].short}
                     </strong>
                     <small>
-                      {TEAMS[g.homeId].name} · {TEAMS[g.homeId].league} · {g.timeLabel}
+                      {TEAMS[g.homeId].league} · {g.timeLabel}
                     </small>
                   </span>
                   <span className="also-cta">Get ticket</span>
@@ -114,12 +111,8 @@ export function Home() {
                     {last.shortDate}, {last.season} · Final
                   </div>
                   <div className="lg-score">
-                    <span>
-                      {TEAMS[last.homeId].abbr} {last.finalScore!.home}
-                    </span>
-                    <span>
-                      {TEAMS[last.awayId].abbr} {last.finalScore!.away}
-                    </span>
+                    <span>{scorePair(last)[0]}</span>
+                    <span>{scorePair(last)[1]}</span>
                   </div>
                   <div className={`lg-result ${last.result === 'W' ? 'w' : 'l'}`}>{last.result === 'W' ? 'Win' : 'Loss'} while you represented</div>
                   <small>{seatLine(last.seat)}</small>
@@ -135,7 +128,7 @@ export function Home() {
         </div>
         <PassportToday gameId={(held[0] ?? primary)?.id} cta="Open Passport" variant="card" />
         <p className="home-foot">
-          {fmt(games)} games represented · {state.data.followed.length} teams · since {state.data.fan.fanSince}
+          {gamesLabel(games)} represented · {plural(state.data.followed.length, 'team')} · since {state.data.fan.fanSince}
         </p>
       </div>
     </main>

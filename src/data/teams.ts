@@ -4,7 +4,7 @@ export const TEAMS: Record<string, Team> = {
   BAL: {
     id: 'BAL',
     city: 'Baltimore',
-    name: 'Orioles',
+    name: 'Baseball',
     short: 'Baltimore',
     abbr: 'BAL',
     league: 'MLB',
@@ -17,7 +17,7 @@ export const TEAMS: Record<string, Team> = {
   BOS: {
     id: 'BOS',
     city: 'Boston',
-    name: 'Red Sox',
+    name: 'Baseball',
     short: 'Boston',
     abbr: 'BOS',
     league: 'MLB',
@@ -30,7 +30,7 @@ export const TEAMS: Record<string, Team> = {
   NYY: {
     id: 'NYY',
     city: 'New York',
-    name: 'Yankees',
+    name: 'Baseball',
     short: 'New York',
     abbr: 'NYY',
     league: 'MLB',
@@ -43,7 +43,7 @@ export const TEAMS: Record<string, Team> = {
   TB: {
     id: 'TB',
     city: 'Tampa Bay',
-    name: 'Rays',
+    name: 'Baseball',
     short: 'Tampa Bay',
     abbr: 'TB',
     league: 'MLB',
@@ -56,7 +56,7 @@ export const TEAMS: Record<string, Team> = {
   TOR: {
     id: 'TOR',
     city: 'Toronto',
-    name: 'Blue Jays',
+    name: 'Baseball',
     short: 'Toronto',
     abbr: 'TOR',
     league: 'MLB',
@@ -69,7 +69,7 @@ export const TEAMS: Record<string, Team> = {
   CLE: {
     id: 'CLE',
     city: 'Cleveland',
-    name: 'Guardians',
+    name: 'Baseball',
     short: 'Cleveland',
     abbr: 'CLE',
     league: 'MLB',
@@ -82,7 +82,7 @@ export const TEAMS: Record<string, Team> = {
   DET: {
     id: 'DET',
     city: 'Detroit',
-    name: 'Tigers',
+    name: 'Baseball',
     short: 'Detroit',
     abbr: 'DET',
     league: 'MLB',
@@ -95,7 +95,7 @@ export const TEAMS: Record<string, Team> = {
   CAR: {
     id: 'CAR',
     city: 'Carolina',
-    name: 'Hurricanes',
+    name: 'Hockey',
     short: 'Carolina',
     abbr: 'CAR',
     league: 'NHL',
@@ -108,7 +108,7 @@ export const TEAMS: Record<string, Team> = {
   WSH: {
     id: 'WSH',
     city: 'Washington',
-    name: 'Capitals',
+    name: 'Hockey',
     short: 'Washington',
     abbr: 'WSH',
     league: 'NHL',
@@ -121,7 +121,7 @@ export const TEAMS: Record<string, Team> = {
   BLT: {
     id: 'BLT',
     city: 'Baltimore',
-    name: 'Ravens',
+    name: 'Football',
     short: 'Baltimore',
     abbr: 'BAL',
     league: 'NFL',
@@ -134,7 +134,7 @@ export const TEAMS: Record<string, Team> = {
   PIT: {
     id: 'PIT',
     city: 'Pittsburgh',
-    name: 'Steelers',
+    name: 'Football',
     short: 'Pittsburgh',
     abbr: 'PIT',
     league: 'NFL',
@@ -147,7 +147,7 @@ export const TEAMS: Record<string, Team> = {
   CLT: {
     id: 'CLT',
     city: 'Charlotte',
-    name: 'Charlotte FC',
+    name: 'Soccer',
     short: 'Charlotte',
     abbr: 'CLT',
     league: 'MLS',
@@ -160,7 +160,7 @@ export const TEAMS: Record<string, Team> = {
   ATL: {
     id: 'ATL',
     city: 'Atlanta',
-    name: 'Atlanta United',
+    name: 'Soccer',
     short: 'Atlanta',
     abbr: 'ATL',
     league: 'MLS',
@@ -173,7 +173,7 @@ export const TEAMS: Record<string, Team> = {
   WAS: {
     id: 'WAS',
     city: 'Washington',
-    name: 'Mystics',
+    name: 'Basketball',
     short: 'Washington',
     abbr: 'WAS',
     league: 'WNBA',
@@ -186,7 +186,7 @@ export const TEAMS: Record<string, Team> = {
   NYL: {
     id: 'NYL',
     city: 'New York',
-    name: 'Liberty',
+    name: 'Basketball',
     short: 'New York',
     abbr: 'NY',
     league: 'WNBA',
@@ -199,7 +199,7 @@ export const TEAMS: Record<string, Team> = {
   CHA: {
     id: 'CHA',
     city: 'Charlotte',
-    name: 'Hornets',
+    name: 'Basketball',
     short: 'Charlotte',
     abbr: 'CHA',
     league: 'NBA',

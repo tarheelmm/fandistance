@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useStore, type GameActivity } from '../../state/store';
-import { eligibleGames, fmt, gameById, minutesUntil, nextGame, ticketedToday, ticketView } from '../../state/selectors';
+import { eligibleGames, fmt, gameById, minutesUntil, nextGame, teamName, ticketedToday, ticketView } from '../../state/selectors';
 import { useNow } from '../../state/hooks';
 import { TEAMS } from '../../data/teams';
 import type { Game } from '../../data/types';
@@ -51,7 +51,7 @@ export function GameDayHub() {
   const showScoreIn = !!t.finalScore && !scoreSeen.has(game.id);
 
   return (
-    <main className="screen theme-light gd">
+    <main className="screen theme-dark gd">
       <header className="gd-head">
         <div className="gd-bar">
           <span className="icon-btn" aria-hidden="true" />
@@ -72,7 +72,7 @@ export function GameDayHub() {
                 aria-selected={g.id === game.id}
                 onClick={() => navigate(`/gameday/${g.id}`, { replace: true })}
               >
-                {TEAMS[g.homeId].short} {TEAMS[g.homeId].sport === 'football' ? 'Football' : TEAMS[g.homeId].name}
+                {teamName(g.homeId)}
               </button>
             ))}
           </div>
@@ -188,7 +188,7 @@ function NoActiveGame() {
   const next = nextGame(state);
   const g = eligible[0] ?? next;
   return (
-    <main className="screen theme-light gd">
+    <main className="screen theme-dark gd">
       <header className="gd-head">
         <div className="gd-bar">
           <span className="icon-btn" aria-hidden="true" />

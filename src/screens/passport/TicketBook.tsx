@@ -19,7 +19,7 @@ export function TicketBook() {
   const [season, setSeason] = useState<string>('all');
   const [team, setTeam] = useState<string>('all');
   const shown = scoped.filter((t) => (season === 'all' || t.season === season) && (teamId || team === 'all' || t.fanTeamId === team));
-  const title = teamId ? `${TEAMS[teamId].name} ticket book` : 'Ticket book';
+  const title = teamId ? `${teamName(teamId)} ticket book` : 'Ticket book';
 
   return (
     <main className="screen theme-dark passport">
@@ -45,7 +45,7 @@ export function TicketBook() {
             </button>
             {teams.map((id) => (
               <button key={id} className="chip" aria-pressed={team === id} onClick={() => setTeam(id)}>
-                {TEAMS[id].name}
+                {teamName(id)}
               </button>
             ))}
           </div>
@@ -107,7 +107,7 @@ export function TicketDetail() {
             Game story
           </h2>
           <p className="td-sub">
-            {TEAMS[t.awayId].name} @ {home.name} · {t.venue}
+            {TEAMS[t.awayId].short} @ {home.short} · {t.venue}
           </p>
           <ul className="check-list">
             <li>

@@ -4,7 +4,7 @@ import { buildHistory, type HistorySpec } from './history';
 export const SCENARIOS: Scenario[] = [
   { id: 'A', title: 'Baltimore vs Boston', blurb: 'Ticket window just opened · 55 min to first pitch' },
   { id: 'B', title: 'Standing Room Only', blurb: 'Every seat is taken — ticket issues as SRO' },
-  { id: 'C', title: 'Multiple eligible games', blurb: 'Orioles, Hurricanes and Ravens all ready' },
+  { id: 'C', title: 'Multiple eligible games', blurb: 'Baltimore, Carolina and Baltimore Football all ready' },
   { id: 'D', title: 'Completed game', blurb: 'Final 7–3 added to the same ticket' },
   { id: 'E', title: 'Milestone game', blurb: 'Game #50 in progress — end it to earn marks' },
   { id: 'F', title: 'Established fan Passport', blurb: '6 teams · 5 leagues · 2 seasons · 37 games' },
@@ -116,17 +116,17 @@ const MEMORIES_RICH: Memory[] = [
     colors: { shell: '#E0542B', claw: '#C23B22', plate: '#F4E3C1', bg: '#1E3A5F' },
   },
   { id: 'm5', kind: 'activity', title: 'Scored every inning', date: 'Jun 12, 2026', art: 'scorecard' },
-  { id: 'm6', kind: 'photo', title: "LET'S GO O'S!", date: 'May 10, 2027', art: 'fan' },
+  { id: 'm6', kind: 'photo', title: 'Let’s go Baltimore!', date: 'May 10, 2027', art: 'fan' },
   { id: 'm7', kind: 'photo', title: 'Harbor at sunset', date: 'Apr 19, 2027', art: 'skyline' },
   { id: 'm8', kind: 'activity', title: 'Crab feast with family', date: 'Sep 1, 2026', art: 'crab' },
 ];
 
 const BENCH: BenchPost[] = [
-  { id: 'b1', author: 'BirdlandAlways', city: 'Baltimore, MD', text: "Let's go O's! Rotation looks sharp tonight.", minsAgo: 2, likes: 24, replies: 3 },
+  { id: 'b1', author: 'BirdlandAlways', city: 'Baltimore, MD', text: 'Let’s go Baltimore! Rotation looks sharp tonight.', minsAgo: 2, likes: 24, replies: 3 },
   { id: 'b2', author: 'RavenFan77', city: 'Towson, MD', text: 'Great night for baseball. Harbor is glowing.', minsAgo: 3, likes: 18, replies: 2 },
-  { id: 'b3', author: 'CamdenCrew', city: 'Charlotte, NC', text: 'Checking in from Charlotte, NC! Go O’s!', minsAgo: 5, likes: 32, replies: 11 },
+  { id: 'b3', author: 'CamdenCrew', city: 'Charlotte, NC', text: 'Checking in from Charlotte, NC! Let’s go Baltimore!', minsAgo: 5, likes: 32, replies: 11 },
   { id: 'b4', author: 'TerpBird', city: 'College Park, MD', text: "That's what we needed!", minsAgo: 6, likes: 9, replies: 0 },
-  { id: 'b5', author: 'OriolesDad', city: 'Tampa, FL', text: 'Still representing from 912 miles away. Let’s go!', minsAgo: 8, likes: 27, replies: 4 },
+  { id: 'b5', author: 'HarborDad', city: 'Tampa, FL', text: 'Still representing from 912 miles away. Let’s go!', minsAgo: 8, likes: 27, replies: 4 },
 ];
 
 export function buildScenario(id: ScenarioId, now: number): ScenarioData {

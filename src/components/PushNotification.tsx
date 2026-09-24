@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { teamName } from '../state/selectors';
 import type { Game } from '../data/types';
 import { TEAMS } from '../data/teams';
 import { FDMark } from './FDMark';
@@ -54,7 +55,7 @@ export function PushNotification({ games, onOpen }: { games: Game[]; onOpen: () 
           <strong>GET IN LINE, IT’S ALMOST GAME TIME!</strong>
           {many ? (
             <span>
-              {games.length} games are ready: {games.map((x) => `${TEAMS[x.homeId].short}${TEAMS[x.homeId].sport === 'football' ? ' Football' : ''}`).join(', ')}
+              {games.length} games are ready: {games.map((x) => teamName(x.homeId)).join(', ')}
             </span>
           ) : (
             <span>

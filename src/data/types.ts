@@ -4,7 +4,7 @@ export type League = 'MLB' | 'NHL' | 'NFL' | 'MLS' | 'WNBA' | 'NBA';
 export interface Team {
   id: string;
   city: string;
-  name: string; // "Orioles"
+  name: string; // sport noun: "Baseball" (a team is its city; full name = city + sport)
   short: string; // "Baltimore"
   abbr: string; // "BAL"
   league: League;

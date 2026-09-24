@@ -11,7 +11,6 @@ import { BottomNav } from '../components/BottomNav';
 import { DemoControls } from '../components/DemoControls';
 
 const NO_NAV = [/^\/ticket\//];
-const LIGHT = [/^\/gameday/, /^\/ticket\/[^/]+$/];
 
 export function App() {
   const location = useLocation();
@@ -35,7 +34,6 @@ export function App() {
 
   const path = location.pathname;
   const showNav = !NO_NAV.some((r) => r.test(path));
-  const light = LIGHT.some((r) => r.test(path));
 
   return (
     <>
@@ -49,7 +47,7 @@ export function App() {
         <Route path="/passport/*" element={<PassportRoutes />} />
         <Route path="*" element={<Home />} />
       </Routes>
-      {showNav && <BottomNav tone={light ? 'light' : 'dark'} />}
+      {showNav && <BottomNav tone="dark" />}
       {!launching && <DemoControls onRestart={replayLaunch} />}
       {launching && <Launch onDone={() => setLaunching(false)} />}
     </>

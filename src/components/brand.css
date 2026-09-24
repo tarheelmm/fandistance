@@ -96,7 +96,7 @@
 
 .fd-wordmark .fan,
 .fd-lockup .fan {
-  color: #0d1b3d;
+  color: #fff;
 }
 
 .fd-wordmark.dark-bg .fan,
@@ -122,7 +122,7 @@
   font-size: clamp(10px, 3.2vw, 13px);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #0d1b3d;
+  color: #ffffffeb;
   white-space: nowrap;
 }
 

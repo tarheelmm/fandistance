@@ -112,7 +112,7 @@ export function Scene({ kind, colors, className }: { kind: Memory['art'] | 'bp' 
           <path d="M44 120 C46 86 114 86 116 120Z" fill="#111" />
           <rect x="40" y="84" width="80" height="26" rx="3" fill="#fff" transform="rotate(-6 80 97)" />
           <text x="80" y="102" textAnchor="middle" fontFamily="Bebas Neue" fontSize="15" fill="#f26a1b" transform="rotate(-6 80 97)">
-            LET’S GO O’S!
+            GO BALTIMORE!
           </text>
         </svg>
       );

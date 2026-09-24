@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useStore } from '../../state/store';
-import { fmt, gameById, minutesUntil } from '../../state/selectors';
+import { fmt, gameById, minutesUntil, teamName } from '../../state/selectors';
 import { useBack, useNow } from '../../state/hooks';
 import { TEAMS } from '../../data/teams';
 import type { Game } from '../../data/types';
@@ -22,7 +22,7 @@ export function GameDayArea() {
   const away = TEAMS[game.awayId];
 
   return (
-    <main className={`screen theme-light area area-${area}`}>
+    <main className={`screen theme-dark area area-${area}`}>
       <div className="topbar area-bar">
         <button className="icon-btn" onClick={back} aria-label="Back to Game Day Hub">
           <Icon name="back" />
@@ -272,9 +272,7 @@ function Bench({ game }: { game: Game }) {
           Still together.
         </p>
         <div>
-          <strong>
-            {home.short} {home.name} game thread
-          </strong>
+          <strong>{teamName(home.id)} game thread</strong>
           <small>
             <Icon name="users" size={14} /> {fmt(count)} fans in the thread
           </small>
@@ -387,8 +385,8 @@ function FanMap() {
         <svg viewBox="0 0 300 200" role="img" aria-label="Map of where fans are representing from">
           <path
             d="M20 70 C30 40 70 34 110 38 L170 40 C200 36 230 44 258 56 L280 64 C284 80 274 96 268 108 C262 124 250 132 246 150 C244 170 236 186 226 190 C222 172 214 160 196 158 C170 158 150 170 128 164 C104 158 86 150 64 150 C44 146 28 132 22 112 C18 98 16 84 20 70 Z"
-            fill="#e8ecf3"
-            stroke="#c9d1de"
+            fill="#1c2d52"
+            stroke="#2c3f69"
           />
           {MAP_DOTS.map((d) => (
             <g key={d.city}>
@@ -398,8 +396,8 @@ function FanMap() {
           ))}
           {state.prefs.showOnFanMap && (
             <g transform="translate(238 128)">
-              <circle r="7" fill="none" stroke="#0d1b3d" strokeWidth="2" />
-              <text x="10" y="-8" fontSize="9" fontWeight="700" fill="#0d1b3d">
+              <circle r="7" fill="none" stroke="#f6f1e7" strokeWidth="2" />
+              <text x="10" y="-8" fontSize="9" fontWeight="700" fill="#f6f1e7">
                 You’re here
               </text>
             </g>
@@ -438,13 +436,13 @@ function AroundYou({ game }: { game: Game }) {
       <div className="area-card around-hero">
         <div>
           <span className="eyebrow">Fans around you</span>
-          <strong className="display">143 {home.name} fans</strong>
+          <strong className="display">143 {home.short} fans</strong>
           <small>within 25 miles of {state.data.fan.homeCity} tonight</small>
         </div>
         <svg viewBox="0 0 120 90" aria-hidden="true">
-          <rect width="120" height="90" rx="10" fill="#e8f3f6" />
-          <path d="M0 60 C30 50 60 70 120 40" stroke="#c7dde3" strokeWidth="6" fill="none" />
-          <path d="M40 0 C45 30 30 60 50 90" stroke="#c7dde3" strokeWidth="4" fill="none" />
+          <rect width="120" height="90" rx="10" fill="#152649" />
+          <path d="M0 60 C30 50 60 70 120 40" stroke="#23385f" strokeWidth="6" fill="none" />
+          <path d="M40 0 C45 30 30 60 50 90" stroke="#23385f" strokeWidth="4" fill="none" />
           {[
             [30, 30],
             [80, 24],
@@ -486,9 +484,7 @@ function TeamOffers({ game }: { game: Game }) {
   return (
     <>
       <div className="team-head area-card" style={{ ['--team' as string]: home.primary }}>
-        <strong>
-          {home.short} {home.name}
-        </strong>
+        <strong>{teamName(home.id)}</strong>
         <small>Official team updates</small>
       </div>
       <ul className="area-card feed offers">

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
+import { teamName } from '../state/selectors';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../state/store';
 import { SCENARIOS } from '../data/scenarios';
-import { TEAMS } from '../data/teams';
 import { Icon } from './Icon';
 import './demo.css';
 
@@ -69,7 +69,7 @@ export function DemoControls({ onRestart }: { onRestart: () => void }) {
                 <div key={g.id} className="demo-game">
                   <div>
                     <strong>
-                      {TEAMS[g.homeId].short} {TEAMS[g.homeId].name} vs {TEAMS[g.awayId].short}
+                      {teamName(g.homeId)} vs {teamName(g.awayId)}
                     </strong>
                     <small>
                       {g.status.toUpperCase()} · {t ? (t.finalScore ? 'ticket + score' : t.checkedInAt ? 'ticket checked in' : 'ticket issued') : 'no ticket'}
