@@ -1,0 +1,88 @@
+.stadium-map {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.stadium-map svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.sm-shell {
+  fill: #1c2436;
+}
+
+.theme-light .sm-shell {
+  fill: #d5dae4;
+}
+
+.sm-sec {
+  fill: #3b4760;
+  stroke: #1c2436;
+  stroke-width: 0.6;
+}
+
+.theme-light .sm-sec {
+  fill: #aeb7c7;
+  stroke: #e7ebf2;
+}
+
+.theme-light .sm-sec.lv2 {
+  fill: #c3cad6;
+}
+
+.theme-light .sm-sec.lv0 {
+  fill: #b9c1ce;
+}
+
+.sm-sec.is-mine {
+  fill: #f26a1b !important;
+  stroke: #fff;
+  stroke-width: 1.4;
+  filter: drop-shadow(0 0 6px rgba(242, 106, 27, 0.9));
+  animation: sec-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes sec-pulse {
+  50% {
+    filter: drop-shadow(0 0 12px rgba(242, 106, 27, 1));
+  }
+}
+
+.sm-concourse {
+  fill: transparent;
+}
+
+.sm-concourse.is-mine {
+  fill: #f26a1b;
+  filter: drop-shadow(0 0 5px rgba(242, 106, 27, 0.9));
+  animation: sec-pulse 1.8s ease-in-out infinite;
+}
+
+.sm-you-glow {
+  animation: you-glow 1.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes you-glow {
+  50% {
+    transform: scale(1.5);
+    opacity: 0.4;
+  }
+}
+
+.sm-pin {
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.35));
+  animation: pin-drop 0.7s cubic-bezier(0.3, 1.5, 0.5, 1) 0.2s both;
+}
+
+@keyframes pin-drop {
+  from {
+    opacity: 0;
+    translate: 0 -30px;
+  }
+}

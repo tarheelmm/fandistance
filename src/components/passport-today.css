@@ -1,0 +1,47 @@
+.pt {
+  border-radius: var(--radius);
+  padding: 16px 16px 6px;
+  background: var(--surface);
+}
+
+.pt.dashed {
+  border: 1.5px dashed color-mix(in srgb, var(--ok) 55%, var(--line));
+}
+
+.pt.card {
+  border: 1px solid var(--line);
+}
+
+.pt-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text);
+}
+
+.pt-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 21px;
+  letter-spacing: 0.05em;
+}
+
+.pt-sub {
+  margin: 2px 0 12px;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.pt-cta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  margin-top: 6px;
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}

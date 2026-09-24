@@ -1,0 +1,158 @@
+.fd-mark {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.fd-route-reveal {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 0;
+}
+
+.fd-stadium-glow {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.fd-stadium > g {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Launch sequence: 0.3s → 1.5s route travels Point A → stadium, then arrival pulse */
+.fd-mark.is-animating .fd-route-reveal {
+  stroke-dashoffset: 1;
+  animation: fd-route 1.2s cubic-bezier(0.45, 0.05, 0.35, 1) 0.3s forwards;
+}
+
+.fd-mark.is-animating .fd-stadium-glow {
+  animation: fd-glow 1.1s ease-out 1.45s forwards;
+}
+
+.fd-mark.is-animating .fd-stadium > g {
+  animation: fd-pulse 0.7s ease-out 1.45s;
+}
+
+@keyframes fd-route {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fd-glow {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  35% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.45;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes fd-pulse {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Wordmark */
+.fd-wordmark {
+  text-align: center;
+}
+
+.fd-wordmark-name {
+  font-family: var(--font-display);
+  -webkit-text-stroke: 0.035em currentColor;
+  paint-order: stroke fill;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  transform: skewX(-9deg);
+  white-space: nowrap;
+}
+
+.fd-wordmark.lg .fd-wordmark-name {
+  font-size: clamp(48px, 15vw, 72px);
+}
+
+.fd-wordmark.md .fd-wordmark-name {
+  font-size: 40px;
+}
+
+.fd-wordmark.sm .fd-wordmark-name {
+  font-size: 26px;
+}
+
+.fd-wordmark .fan,
+.fd-lockup .fan {
+  color: #0d1b3d;
+}
+
+.fd-wordmark.dark-bg .fan,
+.fd-lockup.dark-bg .fan {
+  color: #fff;
+}
+
+.fd-wordmark .dist,
+.fd-lockup .dist {
+  color: #e2323a;
+  -webkit-text-stroke-color: #e2323a;
+}
+
+.fd-tagline {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(10px, 3.2vw, 13px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #0d1b3d;
+  white-space: nowrap;
+}
+
+.fd-wordmark.dark-bg .fd-tagline {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.fd-tagline i {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #e2323a;
+  flex: none;
+}
+
+.fd-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fd-lockup-mark {
+  width: 44px;
+}
+
+.fd-lockup-name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  letter-spacing: 0.03em;
+  transform: skewX(-9deg);
+  line-height: 1;
+  white-space: nowrap;
+}

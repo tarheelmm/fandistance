@@ -1,0 +1,293 @@
+.gd-head {
+  background: radial-gradient(80% 90% at 90% 0%, rgba(242, 106, 27, 0.35), transparent 60%), linear-gradient(180deg, #0d1b3d, #13254f);
+  color: #fff;
+  padding: calc(var(--safe-top) + 2px) 0 14px;
+  margin-top: calc(-1 * var(--safe-top));
+  border-radius: 0 0 22px 22px;
+}
+
+.gd-bar {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--gutter);
+  min-height: 52px;
+}
+
+.gd-bar h1 {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: 0.08em;
+}
+
+.gd-switch {
+  padding: 0 var(--gutter) 10px;
+}
+
+.gd-switch .chip {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.gd-game {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 4px var(--gutter) 0;
+}
+
+.gd-game-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.gd-teams {
+  display: flex;
+  gap: 0;
+}
+
+.gd-teams > * + * {
+  margin-left: -8px;
+}
+
+.gd-matchup {
+  margin: 8px 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(30px, 9vw, 38px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.gd-matchup span {
+  font-size: 0.6em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.gd-when {
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.gd-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.gd-state {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #ffd3b0;
+}
+
+.gd-final {
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.06em;
+  color: var(--md-gold);
+}
+
+.gd-venue {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.gd-ticket {
+  width: 30%;
+  max-width: 128px;
+  flex: none;
+  --bg: #13254f;
+  transform: rotate(3deg);
+  margin-top: 2px;
+}
+
+.gd-seat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  max-width: 520px;
+  margin: 12px auto 0;
+  padding: 0 var(--gutter);
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.gd-seat span {
+  opacity: 0.5;
+}
+
+.gd-final-banner {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff6ea;
+  border: 1px solid #f7d6b3;
+  color: #7a3a0e;
+}
+
+.gd-final-banner div {
+  display: grid;
+  gap: 2px;
+}
+
+.gd-final-banner strong {
+  font-size: 14px;
+}
+
+.gd-final-banner small {
+  font-size: 12px;
+  color: #8a5a3a;
+}
+
+/* Destinations within tonight’s game */
+.gd-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0 18px;
+}
+
+.gd-tile {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-height: 132px;
+  padding: 14px;
+  border-radius: 16px;
+  background: radial-gradient(90% 70% at 100% 0%, color-mix(in srgb, var(--c) 14%, transparent), transparent 70%), var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 6px 18px -12px rgba(13, 27, 61, 0.35);
+  overflow: hidden;
+  transition: transform 0.12s ease;
+}
+
+.gd-tile:active {
+  transform: scale(0.98);
+}
+
+.gd-tile-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 12%, #fff);
+  margin-bottom: 6px;
+}
+
+.gd-tile strong {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--fd-navy);
+  text-transform: uppercase;
+}
+
+.gd-tile small {
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--muted);
+}
+
+.tile-ballpark::after {
+  content: 'LIVE';
+  position: absolute;
+  top: 14px;
+  right: 12px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: #e02b2b;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.gd-empty {
+  padding-top: 28px;
+  text-align: center;
+}
+
+.gd-empty h2 {
+  font-size: 40px;
+  margin: 8px 0 10px;
+  color: var(--fd-navy);
+}
+
+.gd-empty p {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.gd-empty-note {
+  font-size: 13px;
+  margin: 18px 0 22px;
+}
+
+/* ---------- Area screens ---------- */
+.area-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.area-bar h1 {
+  color: var(--fd-navy);
+  font-size: 22px;
+}
+
+.area-context {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  margin: 10px 0 0;
+}
+
+.area-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.area-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0 10px;
+}
+
+.area-h h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  color: var(--fd-navy);
+}

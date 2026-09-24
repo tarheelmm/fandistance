@@ -1,0 +1,66 @@
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: calc(var(--nav-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  border-top: 1px solid;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.bottom-nav.dark {
+  background: rgba(8, 12, 22, 0.92);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #8b95a8;
+}
+
+.bottom-nav.light {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #e4e7ee;
+  color: #6b7280;
+}
+
+.bn-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 48px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.bn-tab.active {
+  color: #f26a1b;
+}
+
+.bn-tab.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 36px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: #f26a1b;
+}
+
+@media (min-width: 700px) {
+  .bottom-nav {
+    left: 50%;
+    right: auto;
+    width: 520px;
+    transform: translateX(-50%);
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-color: inherit;
+  }
+}
