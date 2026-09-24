@@ -1,28 +1,76 @@
 .demo-tab {
   position: fixed;
   z-index: 60;
-  right: 0;
-  top: 42%;
-  width: 22px;
-  min-height: 64px;
-  padding: 8px 0;
-  border-radius: 8px 0 0 8px;
-  border: 1.5px dashed rgba(160, 170, 190, 0.7);
+  right: env(safe-area-inset-right, 0px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  width: 30px;
+  min-height: 88px;
+  padding: 10px 0;
+  border-radius: 10px 0 0 10px;
+  border: 1.5px dashed rgba(242, 106, 27, 0.8);
   border-right: 0;
-  background: rgba(20, 24, 34, 0.55);
-  color: rgba(220, 225, 235, 0.8);
+  background: rgba(7, 16, 31, 0.92);
+  color: #ffb36b;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
   writing-mode: vertical-rl;
   text-orientation: upright;
-  opacity: 0.55;
+  box-shadow: -4px 0 14px rgba(0, 0, 0, 0.35);
+  opacity: 0.9;
 }
 
-.demo-tab:hover,
-.demo-tab:focus-visible {
+/* widen the touch target to 44 px without widening the tab */
+.demo-tab::before {
+  content: '';
+  position: absolute;
+  inset: -6px 0 -6px -14px;
+}
+
+.demo-tab:active {
   opacity: 1;
+  background: rgba(242, 106, 27, 0.18);
+}
+
+.demo-hint {
+  position: fixed;
+  z-index: 61;
+  right: calc(env(safe-area-inset-right, 0px) + 40px);
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 190px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f4f5f8;
+  color: #111827;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+  line-height: 1.35;
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.6);
+  animation: hint-in 0.35s ease-out;
+}
+
+.demo-hint::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  margin-top: -6px;
+  border: 6px solid transparent;
+  border-right: 0;
+  border-left-color: #f4f5f8;
+}
+
+@keyframes hint-in {
+  from {
+    opacity: 0;
+    translate: 8px 0;
+  }
 }
 
 .demo-scrim {

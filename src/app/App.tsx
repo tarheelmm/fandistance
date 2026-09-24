@@ -48,6 +48,8 @@ export function App() {
         <Route path="*" element={<Home />} />
       </Routes>
       {showNav && <BottomNav tone="dark" />}
+      {/* Solid backing behind the phone's status bar (time, battery) in the installed app */}
+      <div className="status-scrim" aria-hidden="true" />
       {!launching && <DemoControls onRestart={replayLaunch} />}
       {launching && <Launch onDone={() => setLaunching(false)} />}
     </>
