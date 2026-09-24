@@ -56,7 +56,7 @@ export const artwork = (id?: string): Artwork | undefined => (id ? BY_ID[id] : u
 export const artworkUrl = (a: Artwork) => `${import.meta.env.BASE_URL}art/orioles/${a.file}`;
 
 /** Everyday concepts rotated across regular games (event concepts are reserved for their moments). */
-const EVERYDAY = ORIOLES_ART.filter((a) => !['opening-day', 'july-4th-fireworks', 'giveaway-day', 'rivalry-series'].includes(a.id));
+export const EVERYDAY = ORIOLES_ART.filter((a) => !['opening-day', 'july-4th-fireworks', 'giveaway-day', 'rivalry-series'].includes(a.id));
 
 function hash(s: string) {
   let h = 2166136261;
@@ -65,9 +65,9 @@ function hash(s: string) {
 }
 
 /** Picks the concept for a past Baltimore Baseball game: event art for its moment, otherwise a stable rotation. */
-export function orioleArtFor(h: HistoryGame, isSeasonOpener: boolean): string {
+export function orioleArtFor(h: HistoryGame, isSeasonOpener: boolean, salt = 0): string {
   if (isSeasonOpener) return 'opening-day';
   if (h.date === 'Jul 4') return 'july-4th-fireworks';
   if (h.opponent === 'NYY') return 'rivalry-series';
-  return EVERYDAY[hash(h.id) % EVERYDAY.length].id;
+  return EVERYDAY[hash(`${h.id}:${salt}`) % EVERYDAY.length].id;
 }

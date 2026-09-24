@@ -111,3 +111,41 @@ describe('season pins', () => {
     expect(pins.filter((p) => p.kind === 'fan-of-game')).toHaveLength(2);
   });
 });
+
+describe('demo restarts', () => {
+  const tonight = (s: ReturnType<typeof initialState>) => s.data.games[0];
+
+  it('keeps the canonical storyboard game when there is no seed', () => {
+    const g = tonight(initialState('A', 1000));
+    expect(g.seat).toEqual({ kind: 'seat', section: '330', row: '9', seat: '14' });
+    expect(g.joinedCount).toBe(8315);
+    expect(g.artImage).toBe('blue-crab');
+  });
+
+  it('gives each restart new art, seat and crowd, never repeating the art just shown', () => {
+    let s = initialState('A', 1000);
+    const seen = new Set<string>();
+    for (let seed = 1; seed <= 12; seed++) {
+      const before = tonight(s).artImage;
+      s = reducer(s, { type: 'loadScenario', id: 'A', now: 2000, seed });
+      const g = tonight(s);
+      expect(g.artImage).not.toBe(before);
+      seen.add(`${g.artImage}|${JSON.stringify(g.seat)}|${g.joinedCount}`);
+    }
+    expect(seen.size).toBe(12);
+  });
+
+  it('varies past tickets too, while scenario rules still hold', () => {
+    const a = reducer(initialState('A', 1000), { type: 'loadScenario', id: 'A', now: 2000, seed: 101 });
+    const b = reducer(initialState('A', 1000), { type: 'loadScenario', id: 'A', now: 2000, seed: 202 });
+    const arts = (s: typeof a) =>
+      allTickets(s)
+        .map((t) => t.artImage)
+        .join();
+    expect(arts(a)).not.toBe(arts(b));
+    // tonight is still the 10th Baltimore game of 2027, so the pin still lands at final
+    let s = reducer(a, { type: 'issueTicket', gameId: GAME, now: 3000 });
+    s = reducer(s, { type: 'setGameStatus', gameId: GAME, status: 'final' });
+    expect(allTickets(s)[0].pins.map((p) => p.title)).toContain('10th Game of 2027');
+  });
+});

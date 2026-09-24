@@ -1,11 +1,12 @@
-import type { BenchPost, Fan, Game, HistoryGame, Memory, Scenario, ScenarioId, Ticket } from './types';
-import { buildHistory, type HistorySpec } from './history';
+import type { BenchPost, Fan, Game, HistoryGame, Memory, Scenario, ScenarioId, SeatAssignment, Ticket } from './types';
+import { buildHistory, mulberry32, type HistorySpec } from './history';
+import { EVERYDAY } from './artwork';
 
 export const SCENARIOS: Scenario[] = [
   { id: 'A', title: 'Baltimore vs Boston', blurb: 'Ticket window just opened · 55 min to first pitch' },
   { id: 'B', title: 'Standing Room Only', blurb: 'Every seat is taken — ticket issues as SRO' },
   { id: 'C', title: 'Multiple eligible games', blurb: 'Baltimore, Carolina and Baltimore Football all ready' },
-  { id: 'D', title: 'Completed game', blurb: 'Final 7–3 added to the same ticket' },
+  { id: 'D', title: 'Completed game', blurb: 'Final score added to the same ticket' },
   { id: 'E', title: 'Milestone game', blurb: 'Game #50 in progress — end it to earn marks' },
   { id: 'F', title: 'Established fan Passport', blurb: '6 teams · 5 leagues · 2 seasons · 37 games' },
 ];
@@ -33,7 +34,7 @@ const FAN: Fan = {
   distanceMiles: 392,
 };
 
-const baseGame = (over: Partial<Game> = {}): Game => ({
+const defaultGame = (over: Partial<Game> = {}): Game => ({
   id: 'bal-bos-0524',
   homeId: 'BAL',
   awayId: 'BOS',
@@ -54,7 +55,7 @@ const baseGame = (over: Partial<Game> = {}): Game => ({
 });
 
 const tomorrow = (): Game =>
-  baseGame({
+  defaultGame({
     id: 'bal-bos-0525',
     dateLabel: 'SUN, MAY 25, 2027',
     timeLabel: '1:35 PM ET',
@@ -129,7 +130,71 @@ const BENCH: BenchPost[] = [
   { id: 'b5', author: 'HarborDad', city: 'Tampa, FL', text: 'Still representing from 912 miles away. Let’s go!', minsAgo: 8, likes: 27, replies: 4 },
 ];
 
-export function buildScenario(id: ScenarioId, now: number): ScenarioData {
+/**
+ * What changes between demo runs. No seed = the canonical storyboard game
+ * (Section 330 · Row 9 · Seat 14, 8,315 joined, Blue Crab art) used on first launch and in tests.
+ * A seed (Restart demo, or picking a scenario) draws fresh artwork, seats, crowd size,
+ * final score and past tickets, never repeating the art that was just on screen.
+ */
+interface Variant {
+  tonight: Partial<Game>;
+  hockey: { seat: SeatAssignment; joinedCount: number; finalScore: { home: number; away: number } };
+  football: { seat: SeatAssignment; joinedCount: number; finalScore: { home: number; away: number } };
+  history: (canonical: number) => number;
+}
+
+// Map sections that exist on the stadium seat map (lower, club and upper levels)
+const SECTIONS = [
+  ...Array.from({ length: 30 }, (_, i) => ({ n: 102 + i * 2, rows: 30 })),
+  ...Array.from({ length: 24 }, (_, i) => ({ n: 202 + i * 2, rows: 12 })),
+  ...Array.from({ length: 24 }, (_, i) => ({ n: 302 + i * 2, rows: 22 })),
+];
+
+function makeVariant(seed?: number, avoidArt?: string): Variant {
+  if (seed === undefined) {
+    return {
+      tonight: {},
+      hockey: { seat: { kind: 'seat', section: '305', row: 'F', seat: '7' }, joinedCount: 3204, finalScore: { home: 4, away: 2 } },
+      football: { seat: { kind: 'seat', section: '540', row: '12', seat: '3' }, joinedCount: 12880, finalScore: { home: 24, away: 17 } },
+      history: (c) => c,
+    };
+  }
+  const r = mulberry32(seed);
+  const int = (lo: number, hi: number) => lo + Math.floor(r() * (hi - lo + 1));
+  const pick = <T>(list: T[]) => list[Math.floor(r() * list.length)];
+  const score = (lo: number, hi: number) => {
+    const home = int(lo, hi);
+    let away = int(lo, hi);
+    if (away === home) away = home > lo ? home - 1 : home + 1;
+    return { home, away };
+  };
+  const sec = pick(SECTIONS);
+  const art = pick(EVERYDAY.filter((a) => a.id !== avoidArt)).id;
+  const histSeed = int(1, 999_999);
+  return {
+    tonight: {
+      artImage: art,
+      seat: { kind: 'seat', section: String(sec.n), row: String(int(1, sec.rows)), seat: String(int(1, 24)) },
+      joinedCount: int(2_400, 41_000),
+      finalScore: score(1, 10),
+    },
+    hockey: {
+      seat: { kind: 'seat', section: String(int(101, 334)), row: String.fromCharCode(65 + int(0, 19)), seat: String(int(1, 20)) },
+      joinedCount: int(1_500, 18_000),
+      finalScore: score(0, 6),
+    },
+    football: {
+      seat: { kind: 'seat', section: String(int(101, 552)), row: String(int(1, 30)), seat: String(int(1, 22)) },
+      joinedCount: int(6_000, 70_000),
+      finalScore: score(3, 38),
+    },
+    history: (c) => c * 1_000_003 + histSeed,
+  };
+}
+
+export function buildScenario(id: ScenarioId, now: number, seed?: number, avoidArt?: string): ScenarioData {
+  const v = makeVariant(seed, avoidArt);
+  const baseGame = (over: Partial<Game> = {}) => defaultGame({ ...v.tonight, ...over });
   const common = { fan: { ...FAN }, bench: BENCH.map((b) => ({ ...b })), spotlights: [] as string[] };
   switch (id) {
     case 'A':
@@ -138,19 +203,19 @@ export function buildScenario(id: ScenarioId, now: number): ScenarioData {
         clock: '6:10 PM',
         games: [baseGame(), tomorrow()],
         tickets: {},
-        history: buildHistory(REGULAR, 11),
+        history: buildHistory(REGULAR, v.history(11)),
         followed: ['BAL', 'CAR', 'BLT'],
         memories: MEMORIES_BASE,
         streakBefore: 2,
       };
     case 'B': {
-      const game = baseGame({ standingRoomOnly: true, seat: { kind: 'sro', area: 'Standing Room Only' }, joinedCount: 45971 });
+      const game = baseGame({ standingRoomOnly: true, seat: { kind: 'sro', area: 'Standing Room Only' }, joinedCount: 45971 }); // a sellout: capacity, every run
       return {
         ...common,
         clock: '6:10 PM',
         games: [game, tomorrow()],
         tickets: {},
-        history: buildHistory(REGULAR, 11),
+        history: buildHistory(REGULAR, v.history(11)),
         followed: ['BAL', 'CAR', 'BLT'],
         memories: MEMORIES_BASE,
         streakBefore: 2,
@@ -173,9 +238,7 @@ export function buildScenario(id: ScenarioId, now: number): ScenarioData {
             artImage: undefined,
             status: 'live',
             startsInMin: -15,
-            seat: { kind: 'seat', section: '305', row: 'F', seat: '7' },
-            joinedCount: 3204,
-            finalScore: { home: 4, away: 2 },
+            ...v.hockey,
           },
           {
             ...baseGame(),
@@ -188,13 +251,11 @@ export function buildScenario(id: ScenarioId, now: number): ScenarioData {
             artImage: undefined,
             status: 'window',
             startsInMin: 60,
-            seat: { kind: 'seat', section: '540', row: '12', seat: '3' },
-            joinedCount: 12880,
-            finalScore: { home: 24, away: 17 },
+            ...v.football,
           },
         ],
         tickets: {},
-        history: buildHistory(REGULAR, 11),
+        history: buildHistory(REGULAR, v.history(11)),
         followed: ['BAL', 'CAR', 'BLT'],
         memories: MEMORIES_BASE,
         streakBefore: 2,
@@ -207,7 +268,7 @@ export function buildScenario(id: ScenarioId, now: number): ScenarioData {
         clock: '10:32 PM',
         games: [game, tomorrow()],
         tickets: { [game.id]: { ...t, checkedInAt: t.issuedAt + 1000 * 60 * 3, finalScore: game.finalScore } },
-        history: buildHistory(REGULAR, 11),
+        history: buildHistory(REGULAR, v.history(11)),
         followed: ['BAL', 'CAR', 'BLT'],
         memories: MEMORIES_BASE,
         streakBefore: 2,
@@ -226,7 +287,7 @@ export function buildScenario(id: ScenarioId, now: number): ScenarioData {
         clock: '7:45 PM',
         games: [game, tomorrow()],
         tickets: { [game.id]: { ...t, checkedInAt: t.issuedAt + 1000 * 60 * 2 } },
-        history: buildHistory(MILESTONE, 23),
+        history: buildHistory(MILESTONE, v.history(23)),
         followed: ['BAL', 'CAR'],
         memories: MEMORIES_BASE,
         streakBefore: 4,
@@ -240,7 +301,7 @@ export function buildScenario(id: ScenarioId, now: number): ScenarioData {
         clock: '10:40 PM',
         games: [game, tomorrow()],
         tickets: { [game.id]: { ...t, checkedInAt: t.issuedAt + 1000 * 60 * 4, finalScore: game.finalScore } },
-        history: buildHistory(ESTABLISHED, 5),
+        history: buildHistory(ESTABLISHED, v.history(5)),
         followed: ['BAL', 'CAR', 'BLT', 'CLT', 'WAS', 'CHA'],
         memories: MEMORIES_RICH,
         streakBefore: 3,

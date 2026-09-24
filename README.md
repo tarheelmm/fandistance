@@ -72,13 +72,15 @@ Passport home runs in this order: Stats, Recognition, Team perks, Last game, Tic
 
 An orange dashed **DEMO** tab on the right edge (or press **D**) opens reviewer tools. They're kept separate from the consumer UI. The first time the app opens on a device, a short hint points to the tab.
 
-- **A** Baltimore vs Boston (Section 330 · Row 9 · Seat 14, 8,315 joined); tonight is the fan's 10th Baltimore Baseball game of 2027
+- **A** Baltimore vs Boston (first run: Section 330 · Row 9 · Seat 14, 8,315 joined); tonight is the fan's 10th Baltimore Baseball game of 2027
 - **B** Standing Room Only
 - **C** Multiple eligible teams/games
 - **D** Completed game
 - **E** Milestone game (end it to add the 50-game, streak and giveaway marks)
 - **F** Established fan Passport (6 teams, 5 leagues, 2 seasons, 37 games)
 - Game state controls (Start / Game final / + Historic mark / ★ Fan of the Game), fan location (at / beyond the venue), and **Restart demo**
+
+Every **Restart demo**, and every scenario you pick, is a fresh run with new ticket artwork, a new section, row and seat, a new crowd count, a new final score, and different past tickets in Passport. The artwork never repeats the ticket just shown. A brand-new install starts on the canonical storyboard game (Section 330 · Row 9 · Seat 14, 8,315 joined), and so do the unit tests. Scenario rules hold on every run: tonight is still the 10th game of 2027 in A, Standing Room Only in B, and game #50 in E.
 
 State persists in `localStorage`, so a reload keeps tickets and seats.
 

@@ -41,12 +41,12 @@ const DEFAULT_PREFS: Prefs = {
   publicPassport: false,
 };
 
-export function initialState(scenario: ScenarioId = 'A', now = Date.now()): AppState {
+export function initialState(scenario: ScenarioId = 'A', now = Date.now(), seed?: number, avoidArt?: string): AppState {
   return {
     v: 3,
     scenario,
     loadedAt: now,
-    data: buildScenario(scenario, now),
+    data: buildScenario(scenario, now, seed, avoidArt),
     activity: {},
     recapSeen: {},
     prefs: DEFAULT_PREFS,
@@ -54,7 +54,7 @@ export function initialState(scenario: ScenarioId = 'A', now = Date.now()): AppS
 }
 
 export type Action =
-  | { type: 'loadScenario'; id: ScenarioId; now: number }
+  | { type: 'loadScenario'; id: ScenarioId; now: number; seed?: number }
   | { type: 'issueTicket'; gameId: string; now: number }
   | { type: 'checkIn'; gameId: string; now: number }
   | { type: 'setGameStatus'; gameId: string; status: GameStatus }
@@ -92,7 +92,8 @@ export function reducer(state: AppState, action: Action): AppState {
   const { data } = state;
   switch (action.type) {
     case 'loadScenario':
-      return initialState(action.id, action.now);
+      // a seeded load is a fresh demo run: new art, seats and history, never the art just shown
+      return initialState(action.id, action.now, action.seed, action.seed === undefined ? undefined : data.games[0]?.artImage);
 
     case 'issueTicket': {
       // ONE GAME = ONE TICKET: issuing is idempotent.
