@@ -1,12 +1,13 @@
 // v1.1 handoff verification checklist, run against the built app at 390 px (scenario A).
 //   npm run build && npx vite preview --port 4173 &  →  node scripts/verify-v11.mjs
 import { chromium } from 'playwright-core';
+import { executablePath } from './browser.mjs';
 import { mkdirSync } from 'node:fs';
 
 const base = 'http://localhost:4173/?nolaunch#';
 const OUT = new URL('../acceptance/out/', import.meta.url).pathname;
 mkdirSync(OUT, { recursive: true });
-const b = await chromium.launch({ executablePath: process.env.CHROME ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const b = await chromium.launch({ executablePath });
 const p = await b.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
 const results = [];
 const check = (name, ok, detail = '') => results.push({ name, ok, detail });

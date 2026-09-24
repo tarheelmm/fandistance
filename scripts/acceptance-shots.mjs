@@ -7,6 +7,7 @@
 // Output: acceptance/out/*.png. Safe areas are simulated (47px top / 34px bottom)
 // with a status bar and home indicator overlay so clearance can be checked visually.
 import { chromium } from 'playwright-core';
+import { executablePath } from './browser.mjs';
 import { mkdirSync } from 'node:fs';
 
 const base = process.argv.find((a) => a.startsWith('http')) ?? 'http://localhost:4173/';
@@ -14,8 +15,7 @@ const only = process.argv.find((a) => a.startsWith('--only='))?.slice(7);
 const OUT = new URL('../acceptance/out/', import.meta.url).pathname;
 mkdirSync(OUT, { recursive: true });
 
-const exe = process.env.CHROME ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
-const browser = await chromium.launch({ executablePath: exe });
+const browser = await chromium.launch({ executablePath });
 const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
 const page = await ctx.newPage();
 page.on('pageerror', (e) => console.error('PAGE ERROR', e.message));

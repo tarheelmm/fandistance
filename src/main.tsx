@@ -19,3 +19,11 @@ createRoot(document.getElementById('root')!).render(
     </StoreProvider>
   </StrictMode>,
 );
+
+// Installed app: cache the build so it opens offline. Hosts that don't allow service workers
+// (for example an embedded review frame) simply skip this.
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}

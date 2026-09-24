@@ -11,7 +11,7 @@ This is the V2 storyboard integration pass. The approved boards live in [`docs/s
 | `03-v2-end-to-end` | Notification → print → Ticket + Seat → Game Day Hub → recap |
 | `04-passport` | Passport, Ticket Book, Game Story, Recognition, Memories, Seasons, Teams |
 | `05-bench-locker-room` | The Bench (inside Game Day) and Locker Room (inside Passport) |
-| `06-orioles-ticket-art-concepts` | Orioles ticket artwork (`src/data/artwork.ts`, `public/art/orioles/`) |
+| `06-orioles-ticket-art-concepts` | Test-team (Baltimore) ticket artwork (`src/data/artwork.ts`, `public/art/orioles/`) |
 
 ## Run
 
@@ -72,7 +72,7 @@ Passport home runs in this order: Stats, Recognition, Team perks, Last game, Tic
 
 A small dashed **DEMO** tab on the right edge (or press **D**) opens reviewer tools. They're kept separate from the consumer UI.
 
-- **A** Baltimore vs Boston (Section 330 · Row 9 · Seat 14, 8,315 joined); tonight is the fan's 10th Orioles game of 2027
+- **A** Baltimore vs Boston (Section 330 · Row 9 · Seat 14, 8,315 joined); tonight is the fan's 10th Baltimore Baseball game of 2027
 - **B** Standing Room Only
 - **C** Multiple eligible teams/games
 - **D** Completed game
@@ -81,6 +81,14 @@ A small dashed **DEMO** tab on the right edge (or press **D**) opens reviewer to
 - Game state controls (Start / Game final / + Historic mark / ★ Fan of the Game), fan location (at / beyond the venue), and **Restart demo**
 
 State persists in `localStorage`, so a reload keeps tickets and seats.
+
+## Install on a phone
+
+The app is a Progressive Web App (PWA). Open it in Safari (iPhone) or Chrome (Android) and choose **Add to Home Screen**. It then opens full screen with the FanDistance icon and works offline, because a service worker caches the whole build. The claude.ai review link can't be installed; use the GitHub Pages address once Pages is turned on (below).
+
+## CI and GitHub Pages
+
+`.github/workflows/ci.yml` runs on every push and pull request: typecheck, unit tests, build, then the v1.1 checklist in Chromium at 390 px. Checklist screenshots are kept as a run artifact. Pushes to `main` also publish `dist/` to GitHub Pages at `https://tarheelmm.github.io/fandistance/`. This needs a one-time setting: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
 ## Storyboard acceptance
 

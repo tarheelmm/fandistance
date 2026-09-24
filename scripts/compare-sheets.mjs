@@ -2,6 +2,7 @@
 //   node scripts/compare-sheets.mjs   (after acceptance-shots.mjs)
 // Output: acceptance/compare/*.jpg (committed as acceptance evidence)
 import { chromium } from 'playwright-core';
+import { executablePath } from './browser.mjs';
 import { mkdirSync, readdirSync, readFileSync } from 'node:fs';
 
 const root = new URL('../', import.meta.url).pathname;
@@ -41,7 +42,7 @@ const SHEETS = [
 ];
 
 const H = 760;
-const browser = await chromium.launch({ executablePath: process.env.CHROME ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const browser = await chromium.launch({ executablePath });
 const page = await browser.newPage({ viewport: { width: 2400, height: H + 80 } });
 
 for (const [name, board, [x, y, w, h], names] of SHEETS) {
