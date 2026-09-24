@@ -42,6 +42,7 @@ const baseGame = (over: Partial<Game> = {}): Game => ({
   season: '2027',
   venue: 'Oriole Park at Camden Yards',
   art: 'baltimore-harbor',
+  artImage: 'blue-crab',
   status: 'window',
   startsInMin: 55,
   seat: { kind: 'seat', section: '330', row: '9', seat: '14' },
@@ -66,6 +67,7 @@ export const issueTicketFor = (game: Game, fan: Fan, now: number): Ticket => ({
   id: `tkt-${game.id}`,
   gameId: game.id,
   art: game.art,
+  artImage: game.artImage,
   issuedAt: now,
   seat: game.seat ?? { kind: 'sro', area: 'Standing Room Only' },
   joinedCount: game.joinedCount,
@@ -166,6 +168,7 @@ export function buildScenario(id: ScenarioId, now: number): ScenarioData {
             timeLabel: '7:00 PM ET',
             venue: 'Lenovo Center',
             art: 'raleigh-ice',
+            artImage: undefined,
             status: 'live',
             startsInMin: -15,
             seat: { kind: 'seat', section: '305', row: 'F', seat: '7' },
@@ -180,6 +183,7 @@ export function buildScenario(id: ScenarioId, now: number): ScenarioData {
             timeLabel: '8:15 PM ET',
             venue: 'M&T Bank Stadium',
             art: 'baltimore-gridiron',
+            artImage: undefined,
             status: 'window',
             startsInMin: 60,
             seat: { kind: 'seat', section: '540', row: '12', seat: '3' },
@@ -211,6 +215,7 @@ export function buildScenario(id: ScenarioId, now: number): ScenarioData {
       const game = baseGame({
         status: 'live',
         startsInMin: -40,
+        artImage: 'giveaway-day',
         milestones: [{ kind: 'giveaway', label: 'GIVEAWAY', detail: 'Orange Hat Night giveaway', value: 'HAT' }],
       });
       const t = issueTicketFor(game, FAN, now - 1000 * 60 * 95);

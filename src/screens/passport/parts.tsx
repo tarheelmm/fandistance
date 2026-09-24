@@ -61,7 +61,7 @@ export function Stub({ t }: { t: TicketView }) {
         <small>{t.seat.kind === 'seat' ? `${t.seat.section}-${t.seat.row}-${t.seat.seat}` : 'SRO'}</small>
       </div>
       <div className="stub-art">
-        <TicketArt theme={t.art} date="" time="" lite />
+        <TicketArt theme={t.art} image={t.artImage} date="" time="" lite />
         {t.marks.length > 0 && (
           <span className="stub-mark" aria-hidden="true">
             <Icon name="star" size={11} stroke={2.4} />

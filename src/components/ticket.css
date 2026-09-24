@@ -80,6 +80,11 @@
   height: 100%;
 }
 
+.ticket-art-img {
+  object-fit: cover;
+  user-select: none;
+}
+
 .ticket-brand {
   position: absolute;
   top: 0;

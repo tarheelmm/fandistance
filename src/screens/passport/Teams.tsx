@@ -97,7 +97,7 @@ export function TeamHome() {
       <div className="wrap">
         <div className="th-hero" style={{ ['--team' as string]: team.primary }}>
           <div className="th-art">
-            <TicketArt theme={st.tickets[0]?.art ?? 'baltimore-harbor'} date="" time="" lite />
+            <TicketArt theme={st.tickets[0]?.art ?? 'baltimore-harbor'} image={st.tickets[0]?.artImage} date="" time="" lite />
           </div>
           <div className="th-id">
             <TeamMark id={teamId} size={64} />

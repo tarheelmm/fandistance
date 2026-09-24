@@ -32,6 +32,8 @@ export interface Game {
   season: string; // "2027"
   venue: string;
   art: ArtThemeId;
+  /** Approved team artwork concept id (src/data/artwork.ts); falls back to `art` when absent. */
+  artImage?: string;
   status: GameStatus;
   /** minutes until first pitch at the moment the scenario loads */
   startsInMin: number;
@@ -67,6 +69,7 @@ export interface Ticket {
   id: string; // `tkt-${gameId}`
   gameId: string;
   art: ArtThemeId;
+  artImage?: string;
   issuedAt: number;
   seat: SeatAssignment;
   joinedCount: number;
@@ -110,6 +113,7 @@ export interface HistoryGame {
   score: string; // "6-4"
   seat: string; // "331-8-2" or "SRO"
   art: ArtThemeId;
+  artImage?: string;
   miles: number;
 }
 

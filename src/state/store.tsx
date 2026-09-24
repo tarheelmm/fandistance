@@ -21,7 +21,7 @@ export interface Prefs {
 }
 
 export interface AppState {
-  v: 1;
+  v: 2;
   scenario: ScenarioId;
   loadedAt: number;
   data: ScenarioData;
@@ -43,7 +43,7 @@ const DEFAULT_PREFS: Prefs = {
 
 export function initialState(scenario: ScenarioId = 'A', now = Date.now()): AppState {
   return {
-    v: 1,
+    v: 2,
     scenario,
     loadedAt: now,
     data: buildScenario(scenario, now),
@@ -171,7 +171,7 @@ function load(): AppState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as AppState;
-      if (parsed?.v === 1 && parsed.data?.games) return parsed;
+      if (parsed?.v === 2 && parsed.data?.games) return parsed;
     }
   } catch {
     /* storage unavailable — fall through to a fresh demo */

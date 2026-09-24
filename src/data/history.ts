@@ -1,5 +1,6 @@
 import type { ArtThemeId, HistoryGame, Sport } from './types';
 import { TEAMS } from './teams';
+import { orioleArtFor } from './artwork';
 
 /** Deterministic PRNG so demo history is identical on every load. */
 function mulberry32(seed: number) {
@@ -86,6 +87,14 @@ export function buildHistory(specs: HistorySpec[], seed = 7): HistoryGame[] {
         miles,
       });
     });
+  }
+  // Orioles tickets carry the approved Baltimore artwork concepts
+  const openers = new Set<string>();
+  for (const h of [...out].sort((a, b) => sortKey(a) - sortKey(b))) {
+    if (h.teamId !== 'BAL') continue;
+    const opener = !openers.has(h.season);
+    openers.add(h.season);
+    h.artImage = orioleArtFor(h, opener);
   }
   // newest first
   return out.sort((a, b) => sortKey(b) - sortKey(a));

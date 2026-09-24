@@ -9,6 +9,7 @@ export interface TicketView {
   id: string;
   gameId: string;
   art: ArtThemeId;
+  artImage?: string;
   homeId: string;
   awayId: string;
   dateLabel: string;
@@ -40,6 +41,7 @@ export function ticketView(s: AppState, t: Ticket): TicketView {
     id: t.id,
     gameId: g.id,
     art: t.art,
+    artImage: t.artImage,
     homeId: g.homeId,
     awayId: g.awayId,
     dateLabel: g.dateLabel,
@@ -87,6 +89,7 @@ export function historyTicketView(h: HistoryGame, ordinal: number): TicketView {
     id: h.id,
     gameId: h.id,
     art: h.art,
+    artImage: h.artImage,
     homeId,
     awayId,
     dateLabel: `${DOW[d.getDay()]}, ${mon.toUpperCase()} ${day}, ${h.season}`,

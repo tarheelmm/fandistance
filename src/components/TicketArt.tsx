@@ -1,8 +1,11 @@
 import { useId, type ReactNode } from 'react';
 import type { ArtThemeId } from '../data/types';
+import { artwork, artworkUrl } from '../data/artwork';
 
 interface Props {
   theme: ArtThemeId;
+  /** Approved artwork concept id; renders that image instead of the generated poster. */
+  image?: string;
   /** e.g. ['05', '24', '27'] — date identity painted into the artwork */
   date: string;
   time: string;
@@ -14,7 +17,10 @@ interface Props {
  * Collectible poster artwork. Generated once per game and frozen on the ticket:
  * team identity, city/local culture, venue elements, game specifics and date/time.
  */
-export function TicketArt({ theme, date, time, lite }: Props) {
+export function TicketArt({ theme, image, date, time, lite }: Props) {
+  const approved = artwork(image);
+  if (approved)
+    return <img className="ticket-art-svg ticket-art-img" src={artworkUrl(approved)} alt="" style={{ objectPosition: approved.focus }} decoding="async" draggable={false} />;
   const uid = useId().replace(/:/g, '');
   switch (theme) {
     case 'baltimore-harbor':

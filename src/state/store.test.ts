@@ -25,6 +25,8 @@ describe('ticket lifecycle: one game = one ticket', () => {
     const t = s.data.tickets[GAME];
     expect(t.id).toBe(issued.id);
     expect(t.art).toBe(issued.art);
+    expect(t.artImage).toBe('blue-crab');
+    expect(t.artImage).toBe(issued.artImage);
     expect(t.issuedAt).toBe(issued.issuedAt);
     expect(t.checkedInAt).toBe(3000);
     expect(t.finalScore).toEqual({ home: 7, away: 3 });
@@ -38,6 +40,7 @@ describe('ticket lifecycle: one game = one ticket', () => {
     const labels = s.data.tickets[GAME].marks.map((m) => m.label);
     expect(labels).toEqual(['50 GAMES', '5-GAME STREAK', 'GIVEAWAY']);
     expect(s.data.tickets[GAME].art).toBe(before.art);
+    expect(s.data.tickets[GAME].artImage).toBe('giveaway-day');
   });
 
   it('keeps the ticket permanently in the Passport ticket book', () => {
@@ -55,5 +58,14 @@ describe('ticket lifecycle: one game = one ticket', () => {
     let s = initialState('B', 1000);
     s = reducer(s, { type: 'issueTicket', gameId: GAME, now: 2000 });
     expect(s.data.tickets[GAME].seat.kind).toBe('sro');
+  });
+});
+
+describe('approved Orioles artwork', () => {
+  it('gives every past Orioles ticket an approved concept, with Opening Day on each season opener', () => {
+    const book = allTickets(initialState('F', 1000)).filter((t) => t.fanTeamId === 'BAL');
+    expect(book.every((t) => t.artImage)).toBe(true);
+    const openers = ['2026', '2027'].map((season) => book.filter((t) => t.season === season).at(-1)!);
+    for (const t of openers) expect(t.artImage).toBe('opening-day');
   });
 });

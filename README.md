@@ -11,6 +11,7 @@ This is the V2 storyboard integration pass. The approved boards live in [`docs/s
 | `03-v2-end-to-end` | Notification → print → Ticket + Seat → Game Day Hub → recap |
 | `04-passport` | Passport, Ticket Book, Game Story, Recognition, Memories, Seasons, Teams |
 | `05-bench-locker-room` | The Bench (inside Game Day) and Locker Room (inside Passport) |
+| `06-orioles-ticket-art-concepts` | Orioles ticket artwork (`src/data/artwork.ts`, `public/art/orioles/`) |
 
 ## Run
 
@@ -37,6 +38,12 @@ ISSUED → CHECKED IN (stamp) → GAME FINAL (score added) → MILESTONE MOMENT 
 ```
 
 The ticket is issued the moment the fan taps the notification or an eligible game, so leaving mid-print keeps it. The ticket issued before the game becomes the permanent Ticket Book entry in Passport. See `src/state/store.tsx` and `src/state/store.test.ts`.
+
+## Ticket artwork
+
+Orioles tickets use the 24 approved Baltimore art concepts. Each game's concept is chosen when the ticket is issued and never changes. Opening Day goes on each season opener, July 4th Fireworks on July 4 games, Rivalry Series on the Yankees games, and Giveaway Day on giveaway nights. Every other game gets one of the remaining concepts, picked the same way each time.
+
+The images in `public/art/orioles/` are cut from the approved concept sheet, so they are low resolution (about 185×113 px each). To swap in final artwork, replace a file with the same name, or add a new entry to `ORIOLES_ART`. Concept 24, Last Home Game, isn't included yet because the supplied sheet has a screen overlay across it. Other teams still use the generated posters in `TicketArt.tsx`.
 
 ## Demo controls
 

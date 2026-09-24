@@ -59,7 +59,7 @@ export function Ticket({ view, phase = 'static', printMs = 2800, stampIn, scoreI
         {/* Everything that prints onto the stock */}
         <div className="ticket-print">
           <div className="ticket-art">
-            <TicketArt theme={view.art} date={artDate} time={view.timeLabel.replace(' ET', '')} lite={lite} />
+            <TicketArt theme={view.art} image={view.artImage} date={artDate} time={view.timeLabel.replace(' ET', '')} lite={lite} />
             <div className="ticket-brand">
               <span className="ticket-brand-fd">FD</span>
               <span>
