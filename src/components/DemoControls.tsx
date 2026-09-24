@@ -14,6 +14,19 @@ export function DemoControls({ onRestart }: { onRestart: () => void }) {
   const { state, dispatch } = useStore();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [hint, setHint] = useState(() => !readFlag(HINT_KEY));
+
+  // First launch on a device: point reviewers at the tab for a few seconds, then never again.
+  useEffect(() => {
+    if (!hint) return;
+    const t = setTimeout(() => dismissHint(), 6000);
+    return () => clearTimeout(t);
+  }, [hint]);
+
+  const dismissHint = () => {
+    setHint(false);
+    writeFlag(HINT_KEY);
+  };
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -34,7 +47,20 @@ export function DemoControls({ onRestart }: { onRestart: () => void }) {
 
   return (
     <>
-      <button className="demo-tab" onClick={() => setOpen(true)} aria-label="Open demo controls" aria-expanded={open}>
+      {hint && !open && (
+        <div className="demo-hint" role="status" onClick={dismissHint}>
+          Demo controls: switch scenarios, end a game, or restart the demo.
+        </div>
+      )}
+      <button
+        className="demo-tab"
+        onClick={() => {
+          dismissHint();
+          setOpen(true);
+        }}
+        aria-label="Open demo controls"
+        aria-expanded={open}
+      >
         DEMO
       </button>
       {open && (
@@ -132,4 +158,22 @@ export function DemoControls({ onRestart }: { onRestart: () => void }) {
       )}
     </>
   );
+}
+
+const HINT_KEY = 'fd.demo-hint-seen';
+
+function readFlag(key: string) {
+  try {
+    return localStorage.getItem(key) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function writeFlag(key: string) {
+  try {
+    localStorage.setItem(key, '1');
+  } catch {
+    /* storage unavailable: the hint just shows again next launch */
+  }
 }

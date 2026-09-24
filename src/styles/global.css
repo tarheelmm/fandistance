@@ -380,3 +380,18 @@ svg {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* Status bar backing: in the installed app the page runs under the phone's status bar
+   (viewport-fit=cover), so content scrolling beneath the time and battery gets a solid strip. */
+.status-scrim {
+  position: fixed;
+  z-index: 70;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--safe-top);
+  background: rgba(7, 16, 31, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  pointer-events: none;
+}

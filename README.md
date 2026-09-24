@@ -70,7 +70,7 @@ Passport home runs in this order: Stats, Recognition, Team perks, Last game, Tic
 
 ## Demo controls
 
-A small dashed **DEMO** tab on the right edge (or press **D**) opens reviewer tools. They're kept separate from the consumer UI.
+An orange dashed **DEMO** tab on the right edge (or press **D**) opens reviewer tools. They're kept separate from the consumer UI. The first time the app opens on a device, a short hint points to the tab.
 
 - **A** Baltimore vs Boston (Section 330 · Row 9 · Seat 14, 8,315 joined); tonight is the fan's 10th Baltimore Baseball game of 2027
 - **B** Standing Room Only
