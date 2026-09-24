@@ -1,0 +1,77 @@
+.pin {
+  flex: none;
+  overflow: visible;
+}
+
+.pin:not(.ghost) {
+  filter: drop-shadow(0 2px 1.5px rgba(0, 0, 0, 0.55)) drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3));
+}
+
+.pin.ghost {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+/* Pins stuck onto the ticket: lower-right corner of the art, slightly overlapping */
+.ticket-pins {
+  position: absolute;
+  right: 3cqw;
+  bottom: 3cqw;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+}
+
+.ticket-pins > * {
+  width: 17cqw;
+  height: 17cqw;
+}
+
+.ticket-pins > * + * {
+  margin-right: -4cqw;
+}
+
+.ticket-pins > :nth-child(1) {
+  transform: rotate(8deg);
+}
+
+.ticket-pins > :nth-child(2) {
+  transform: rotate(-7deg) translateY(-2cqw);
+}
+
+.ticket-pins > :nth-child(3) {
+  transform: rotate(5deg);
+}
+
+.ticket-pins .pin-more {
+  display: grid;
+  place-items: center;
+  width: 9cqw;
+  height: 9cqw;
+  margin: 0 1cqw 1cqw 0;
+  border-radius: 50%;
+  background: rgba(10, 6, 4, 0.8);
+  border: 0.5cqw solid #e0a23a;
+  color: #f4d58a;
+  font-family: var(--font-display);
+  font-size: 4.2cqw;
+}
+
+.ticket-pins.pin-in > * {
+  animation: pin-in 0.6s cubic-bezier(0.3, 1.6, 0.4, 1) both;
+}
+
+.ticket-pins.pin-in > :nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.ticket-pins.pin-in > :nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes pin-in {
+  from {
+    opacity: 0;
+    scale: 1.8;
+    translate: 0 -18px;
+  }
+}

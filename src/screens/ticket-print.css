@@ -1,0 +1,111 @@
+.print-screen {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(var(--safe-top) + 22px) var(--gutter) calc(var(--safe-bottom) + 20px);
+  background: radial-gradient(70% 45% at 50% 0%, rgba(255, 236, 200, 0.12), transparent 70%), radial-gradient(120% 60% at 50% 100%, rgba(242, 106, 27, 0.08), transparent), #06080d;
+  color: #fff;
+  --bg: #06080d;
+}
+
+.print-beam {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  width: 70%;
+  height: 70%;
+  transform: translateX(-50%);
+  background: conic-gradient(from 168deg at 50% 0%, transparent 0deg, rgba(255, 240, 210, 0.22) 12deg, transparent 24deg);
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+.stage-preparing .print-beam {
+  opacity: 1;
+  animation: beam 1.6s ease-in-out infinite;
+}
+
+.stage-printing .print-beam {
+  opacity: 0.6;
+}
+
+@keyframes beam {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.print-caption {
+  position: relative;
+  margin: 0 0 18px;
+  font-size: clamp(28px, 8.4vw, 36px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  min-height: 1em;
+}
+
+.stage-ready .print-caption,
+.stage-assigned .print-caption,
+.stage-joined .print-caption {
+  color: #ffb36b;
+  animation: caption-ready 0.5s ease-out;
+}
+
+@keyframes caption-ready {
+  from {
+    transform: scale(0.94);
+    opacity: 0.4;
+  }
+}
+
+.print-ticket {
+  position: relative;
+  width: min(80vw, 340px, calc((100dvh - var(--safe-top) - var(--safe-bottom) - 190px) / 1.74));
+  min-width: 220px;
+}
+
+.print-after {
+  position: relative;
+  margin-top: 20px;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.print-joined {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.5s ease;
+}
+
+.print-joined b {
+  color: #ff8a3d;
+  font-weight: 800;
+}
+
+.print-joined.show,
+.print-next.show {
+  opacity: 1;
+  transform: none;
+}
+
+.print-next {
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  transition: opacity 0.5s ease 0.4s;
+}
