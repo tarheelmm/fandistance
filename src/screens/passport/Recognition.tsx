@@ -162,15 +162,28 @@ export function Memories() {
           </Link>
         </div>
         <div className="mem-grid">
-          {list.map((m) => (
-            <figure key={m.id} className="mem">
-              <Scene kind={m.art} colors={m.colors} />
-              <figcaption>
-                <strong>{m.title}</strong>
-                <small>{m.date}</small>
-              </figcaption>
-            </figure>
-          ))}
+          {list.map((m) => {
+            const ticket = m.gameId ? state.data.tickets[m.gameId] : undefined;
+            const body = (
+              <>
+                <Scene kind={m.art} colors={m.colors} />
+                <figcaption>
+                  <strong>{m.title}</strong>
+                  <small>{m.date}</small>
+                  {ticket && <small className="mem-ticket">On your ticket →</small>}
+                </figcaption>
+              </>
+            );
+            return ticket ? (
+              <Link key={m.id} to={`/passport/ticket/${ticket.id}`} className="mem" aria-label={`${m.title}, ${m.date}. Open its ticket`}>
+                {body}
+              </Link>
+            ) : (
+              <figure key={m.id} className="mem">
+                {body}
+              </figure>
+            );
+          })}
         </div>
         <button className="btn block ghost add-team-btn" onClick={add}>
           <Icon name="plus" size={18} /> Add new memory

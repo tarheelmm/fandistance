@@ -1,6 +1,7 @@
 import type { AppState } from './store';
 import { MILESTONE_GAMES } from './store';
-import type { ArtThemeId, Badge, Game, HistoryGame, MilestoneMark, SeatAssignment, Ticket } from '../data/types';
+import type { ArtThemeId, Badge, BenchPost, Game, HistoryGame, Memory, MilestoneMark, SeatAssignment, Ticket } from '../data/types';
+import { POLL, TRIVIA } from '../data/activities';
 import { TEAMS } from '../data/teams';
 import { sortKey } from '../data/history';
 import { awardPins, type Pin } from '../data/pins';
@@ -32,6 +33,8 @@ export interface TicketView {
   /** Season pins earned on this game, pinned to the ticket */
   pins: Pin[];
   fanOfGame?: boolean;
+  /** Photos, creations, picks and posts kept with this ticket */
+  memoryCount: number;
 }
 
 export const gameById = (s: AppState, id: string) => s.data.games.find((g) => g.id === id);
@@ -65,12 +68,31 @@ function baseTicketView(s: AppState, t: Ticket): TicketView {
     live: g.status === 'live',
     pins: [],
     fanOfGame: t.fanOfGame,
+    memoryCount: 0,
   };
 }
 
 export function ticketView(s: AppState, t: Ticket): TicketView {
   const v = baseTicketView(s, t);
-  return { ...v, pins: pinsIndex(s).get(v.id) ?? [] };
+  return { ...v, pins: pinsIndex(s).get(v.id) ?? [], memoryCount: keepsakes(s, v.gameId).count };
+}
+
+/** Everything the fan did during one game. It stays with that game's ticket in Passport. */
+export interface Keepsakes {
+  memories: Memory[];
+  trivia?: { question: string; pick: string; answer: string; correct: boolean };
+  poll?: { question: string; pick: string; share: number };
+  posts: BenchPost[];
+  count: number;
+}
+
+export function keepsakes(s: AppState, gameId: string): Keepsakes {
+  const act = s.activity[gameId] ?? {};
+  const memories = s.data.memories.filter((m) => m.gameId === gameId);
+  const posts = s.data.bench.filter((p) => p.mine && p.gameId === gameId);
+  const trivia = act.trivia ? { question: TRIVIA.q, pick: act.trivia, answer: TRIVIA.answer, correct: act.trivia === TRIVIA.answer } : undefined;
+  const poll = act.poll ? { question: POLL.q, pick: act.poll, share: POLL.split[POLL.options.indexOf(act.poll)] ?? 0 } : undefined;
+  return { memories, trivia, poll, posts, count: memories.length + posts.length + (trivia ? 1 : 0) + (poll ? 1 : 0) };
 }
 
 const DOW = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -118,6 +140,7 @@ export function historyTicketView(h: HistoryGame, ordinal: number, fanOfGame = f
     result: h.result,
     pins: [],
     fanOfGame,
+    memoryCount: 0,
   };
 }
 
@@ -157,7 +180,7 @@ export function pinsIndex(s: AppState): Map<string, Pin[]> {
 /** Every ticket the fan has ever collected, newest first. */
 export function allTickets(s: AppState): TicketView[] {
   const idx = pinsIndex(s);
-  return baseTickets(s).map((v) => ({ ...v, pins: idx.get(v.id) ?? [] }));
+  return baseTickets(s).map((v) => ({ ...v, pins: idx.get(v.id) ?? [], memoryCount: keepsakes(s, v.gameId).count }));
 }
 
 /** All pins earned, newest first. */

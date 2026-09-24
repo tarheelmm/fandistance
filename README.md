@@ -51,6 +51,10 @@ Baltimore Baseball tickets use the 24 approved Baltimore art concepts. Each game
 
 The images in `public/art/orioles/` are cut from the approved concept sheet, so they are low resolution (about 185×113 px each). To swap in final artwork, replace a file with the same name, or add a new entry to `ORIOLES_ART`. Concept 24, Last Home Game, isn't included yet because the supplied sheet has a screen overlay across it. Other teams still use the generated posters in `TicketArt.tsx`.
 
+## After the game
+
+When a game goes final, everything from it stays with that game's ticket: the final score, the checked-in stamp, earned marks, season pins, and the fan's Game Day memories. Those memories are photos saved from the Ballpark, coloring pages, trivia and poll picks, and the fan's own posts on The Bench. The Game Day Hub lists what was added and links to the ticket in Passport. The ticket art shows a memories count next to its pins, each Ticket Book stub counts its pins and memories, and the ticket page shows them all under **Memories from this game**. On the Memories page, anything from a game links back to its ticket. Scenario D opens with a completed game that already has memories on its ticket. `keepsakes()` in `src/state/selectors.ts` gathers them.
+
 ## Season pins
 
 Pins are collectible memories from a season. Each one is pinned to the ticket of the game that earned it, and they're collected per team and season on the Pin Board (`/passport/pins`). A fan can earn:

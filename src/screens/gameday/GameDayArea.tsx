@@ -5,6 +5,7 @@ import { fmt, gameById, minutesUntil, teamName } from '../../state/selectors';
 import { useBack, useNow } from '../../state/hooks';
 import { TEAMS } from '../../data/teams';
 import type { Game } from '../../data/types';
+import { POLL, TRIVIA } from '../../data/activities';
 import { Icon } from '../../components/Icon';
 import { CrabMascot, Scene } from '../../components/Scene';
 import { AREAS, statusLine } from './GameDayHub';
@@ -108,14 +109,6 @@ function Ballpark({ game }: { game: Game }) {
 }
 
 /* ---------------- PLAY ---------------- */
-const TRIVIA = {
-  q: 'Oriole Park at Camden Yards opened in which year?',
-  options: ['1989', '1992', '1995', '1998'],
-  answer: '1992',
-  split: [9, 62, 21, 8],
-};
-const POLL = { q: 'What’s your game-day snack tonight?', options: ['Crab fries', 'Pit beef', 'Crab cake', 'Peanuts'], split: [38, 24, 27, 11] };
-
 function Play({ game }: { game: Game }) {
   const { state, dispatch } = useStore();
   const act = state.activity[game.id] ?? {};
@@ -257,7 +250,7 @@ function Bench({ game }: { game: Game }) {
   const send = () => {
     const text = draft.trim();
     if (!text) return;
-    dispatch({ type: 'post', post: { id: `p-${Date.now()}`, author: state.data.fan.handle, city: state.data.fan.homeCity, text, minsAgo: 0, likes: 0, replies: 0, mine: true } });
+    dispatch({ type: 'post', post: { id: `p-${Date.now()}`, author: state.data.fan.handle, city: state.data.fan.homeCity, text, minsAgo: 0, likes: 0, replies: 0, mine: true, gameId: game.id } });
     dispatch({ type: 'activity', gameId: game.id, patch: { posted: (state.activity[game.id]?.posted ?? 0) + 1 } });
     setDraft('');
     setSort('recent');

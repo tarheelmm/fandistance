@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useStore } from '../../state/store';
-import { allTickets, fmt, gameById, seatShort, teamName } from '../../state/selectors';
+import { allTickets, fmt, gameById, keepsakes, seatShort, teamName } from '../../state/selectors';
+import { Scene } from '../../components/Scene';
 import { TEAMS } from '../../data/teams';
 import { Ticket } from '../../components/Ticket';
 import { Icon } from '../../components/Icon';
@@ -70,17 +71,11 @@ export function TicketDetail() {
   const home = TEAMS[t.homeId];
   const current = state.data.tickets[t.gameId];
   const game = gameById(state, t.gameId);
-  const act = state.activity[t.gameId] ?? {};
-  const memories = state.data.memories.filter((m) => m.gameId === t.gameId);
+  const keep = keepsakes(state, t.gameId);
   const isHistory = !current;
-
-  const involvement: [string, string][] = [];
-  if (act.coloring) involvement.push(['create', 'Coloring page saved']);
-  if (act.trivia) involvement.push(['play', 'Trivia completed']);
-  if (act.poll) involvement.push(['play', 'Fan poll answered']);
-  if (act.photo) involvement.push(['camera', 'Photo saved from the Ballpark']);
-  if (act.posted) involvement.push(['bench', `${act.posted} post${act.posted > 1 ? 's' : ''} on The Bench`]);
-  if (isHistory) involvement.push(['bench', 'Joined The Bench conversation'], ['play', 'Trivia completed']);
+  // Older tickets predate per-game keepsakes; their story still notes how the fan took part.
+  const pastInvolvement = isHistory ? ['Joined The Bench conversation', 'Trivia completed'] : [];
+  const hasKeepsakes = t.pins.length + t.marks.length + keep.count > 0;
 
   const fmtTime = (ms?: number) => (ms ? new Date(ms).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '');
   const life = [
@@ -101,6 +96,102 @@ export function TicketDetail() {
         <div className="td-ticket">
           <Ticket view={t} />
         </div>
+
+        {hasKeepsakes && (
+          <section className="td-keeps card" aria-labelledby="keeps-h">
+            <h2 id="keeps-h" className="display">
+              Memories from this game
+            </h2>
+            <p className="td-sub">Everything you earned and made on Game Day stays with this ticket.</p>
+
+            {t.pins.length > 0 && (
+              <>
+                <h3 className="td-h3">Pinned to this ticket</h3>
+                <ul className="td-inv td-pins">
+                  {t.pins.map((p) => (
+                    <li key={p.kind}>
+                      <PinBadge kind={p.kind} season={p.season} size={34} /> {p.title}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {t.marks.length > 0 && (
+              <>
+                <h3 className="td-h3">Recognition earned</h3>
+                <ul className="td-inv">
+                  {t.marks.map((m) => (
+                    <li key={m.label}>
+                      <Icon name="star" size={18} /> {m.detail}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {keep.memories.length > 0 && (
+              <>
+                <h3 className="td-h3">Photos &amp; creations</h3>
+                <div className="td-mems">
+                  {keep.memories.map((m) => (
+                    <Link key={m.id} to="/passport/memories" className="mem" aria-label={m.title}>
+                      <Scene kind={m.art} colors={m.colors} />
+                      <span>{m.title}</span>
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {(keep.trivia || keep.poll) && (
+              <>
+                <h3 className="td-h3">Your picks</h3>
+                <ul className="td-inv td-picks">
+                  {keep.trivia && (
+                    <li>
+                      <Icon name="play" size={18} />
+                      <span>
+                        <small>{keep.trivia.question}</small>
+                        <span>
+                          You picked <b>{keep.trivia.pick}</b>
+                          {keep.trivia.correct ? ' · correct' : ` · the answer was ${keep.trivia.answer}`}
+                        </span>
+                      </span>
+                    </li>
+                  )}
+                  {keep.poll && (
+                    <li>
+                      <Icon name="users" size={18} />
+                      <span>
+                        <small>{keep.poll.question}</small>
+                        <span>
+                          <b>{keep.poll.pick}</b> · {keep.poll.share}% of fans picked it too
+                        </span>
+                      </span>
+                    </li>
+                  )}
+                </ul>
+              </>
+            )}
+
+            {keep.posts.length > 0 && (
+              <>
+                <h3 className="td-h3">Your posts on The Bench</h3>
+                <ul className="td-posts">
+                  {keep.posts.map((p) => (
+                    <li key={p.id}>
+                      <p>“{p.text}”</p>
+                      <small>
+                        <Icon name="heart" size={13} /> {p.likes} · <Icon name="reply" size={13} /> {p.replies}
+                      </small>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </section>
+        )}
 
         <section className="td-story card" aria-labelledby="gs-h">
           <h2 id="gs-h" className="display">
@@ -144,44 +235,13 @@ export function TicketDetail() {
             )}
           </ul>
 
-          {involvement.length > 0 && (
+          {pastInvolvement.length > 0 && (
             <>
               <h3 className="td-h3">Your involvement</h3>
               <ul className="td-inv">
-                {involvement.map(([icon, label]) => (
+                {pastInvolvement.map((label) => (
                   <li key={label}>
-                    <Icon name={icon as 'play'} size={18} /> {label}
-                  </li>
-                ))}
-                {memories.length > 0 && (
-                  <li>
-                    <Icon name="image" size={18} /> {memories.length} memor{memories.length > 1 ? 'ies' : 'y'} added
-                  </li>
-                )}
-              </ul>
-            </>
-          )}
-
-          {t.pins.length > 0 && (
-            <>
-              <h3 className="td-h3">Pinned to this ticket</h3>
-              <ul className="td-inv td-pins">
-                {t.pins.map((p) => (
-                  <li key={p.kind}>
-                    <PinBadge kind={p.kind} season={p.season} size={34} /> {p.title}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-
-          {t.marks.length > 0 && (
-            <>
-              <h3 className="td-h3">Recognition earned</h3>
-              <ul className="td-inv">
-                {t.marks.map((m) => (
-                  <li key={m.label}>
-                    <Icon name="star" size={18} /> {m.detail}
+                    <Icon name={label.includes('Bench') ? 'bench' : 'play'} size={18} /> {label}
                   </li>
                 ))}
               </ul>

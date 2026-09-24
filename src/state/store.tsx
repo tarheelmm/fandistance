@@ -42,12 +42,13 @@ const DEFAULT_PREFS: Prefs = {
 };
 
 export function initialState(scenario: ScenarioId = 'A', now = Date.now(), seed?: number, avoidArt?: string): AppState {
+  const data = buildScenario(scenario, now, seed, avoidArt);
   return {
     v: 3,
     scenario,
     loadedAt: now,
-    data: buildScenario(scenario, now, seed, avoidArt),
-    activity: {},
+    data,
+    activity: data.activity ?? {},
     recapSeen: {},
     prefs: DEFAULT_PREFS,
   };

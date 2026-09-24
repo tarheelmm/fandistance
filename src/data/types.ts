@@ -146,6 +146,8 @@ export interface BenchPost {
   replies: number;
   mine?: boolean;
   liked?: boolean;
+  /** The game this post was made during (the fan's own posts are kept with that game's ticket). */
+  gameId?: string;
 }
 
 export type ScenarioId = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';

@@ -306,3 +306,32 @@
   font-weight: 800;
   color: #ffb36b;
 }
+
+.gd-added {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #ffd3b0;
+}
+
+.gd-added li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gd-added svg {
+  color: var(--md-orange);
+}
+
+.gd-final-cta {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffb36b;
+  text-decoration: none;
+}

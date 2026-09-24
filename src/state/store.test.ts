@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { initialState, reducer } from './store';
-import { allTickets } from './selectors';
+import { allTickets, keepsakes } from './selectors';
 
 const GAME = 'bal-bos-0524';
 
@@ -147,5 +147,43 @@ describe('demo restarts', () => {
     let s = reducer(a, { type: 'issueTicket', gameId: GAME, now: 3000 });
     s = reducer(s, { type: 'setGameStatus', gameId: GAME, status: 'final' });
     expect(allTickets(s)[0].pins.map((p) => p.title)).toContain('10th Game of 2027');
+  });
+});
+
+describe('post-game: the ticket keeps everything from the game', () => {
+  it('carries pins, picks, photos, creations and Bench posts into Passport after final', () => {
+    let s = initialState('A', 1000);
+    s = reducer(s, { type: 'issueTicket', gameId: GAME, now: 2000 });
+    s = reducer(s, { type: 'activity', gameId: GAME, patch: { trivia: '1992', poll: 'Pit beef', photo: true } });
+    s = reducer(s, { type: 'addMemory', memory: { id: 'mem-1', kind: 'photo', title: 'From the Ballpark', date: 'May 24, 2027', gameId: GAME, art: 'ballpark' } });
+    s = reducer(s, { type: 'addMemory', memory: { id: 'mem-2', kind: 'creation', title: 'Coloring page', date: 'May 24, 2027', gameId: GAME, art: 'coloring' } });
+    s = reducer(s, { type: 'post', post: { id: 'p1', author: 'Alex M.', city: 'Charlotte, NC', text: 'Let’s go!', minsAgo: 0, likes: 0, replies: 0, mine: true, gameId: GAME } });
+    s = reducer(s, { type: 'spotlight', gameId: GAME });
+    s = reducer(s, { type: 'setGameStatus', gameId: GAME, status: 'final' });
+
+    const ticket = allTickets(s).find((t) => t.gameId === GAME)!;
+    expect(ticket.finalScore).toEqual({ home: 7, away: 3 });
+    expect(ticket.checkedIn).toBe(true);
+    expect(ticket.pins.map((p) => p.kind)).toEqual(expect.arrayContaining(['games-10', 'fan-of-game']));
+    expect(ticket.memoryCount).toBe(5);
+
+    const keep = keepsakes(s, GAME);
+    expect(keep.memories.map((m) => m.id)).toEqual(['mem-2', 'mem-1']);
+    expect(keep.trivia).toMatchObject({ pick: '1992', correct: true });
+    expect(keep.poll).toMatchObject({ pick: 'Pit beef', share: 24 });
+    expect(keep.posts.map((p) => p.text)).toEqual(['Let’s go!']);
+  });
+
+  it('opens the completed game (scenario D) with its memories already on the ticket', () => {
+    const s = initialState('D', 1000);
+    const ticket = allTickets(s).find((t) => t.gameId === GAME)!;
+    expect(ticket.finalScore).toBeDefined();
+    expect(ticket.pins.map((p) => p.kind)).toContain('games-10');
+    expect(ticket.memoryCount).toBe(5);
+  });
+
+  it('keeps memories from other games off this ticket', () => {
+    const s = initialState('A', 1000);
+    expect(keepsakes(s, GAME).count).toBe(0);
   });
 });

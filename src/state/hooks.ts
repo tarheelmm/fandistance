@@ -39,7 +39,9 @@ export function useTodayInPassport(gameId: string | undefined): { items: Passpor
   if (act.posted) items.push({ label: 'Joined The Bench conversation', done: true });
   if (t?.finalScore) items.push({ label: 'Final score added to your ticket', done: true });
   for (const m of t?.marks ?? []) items.push({ label: `${m.detail}`, done: true });
-  return { items, ticket: t ? ticketView(state, t) : undefined };
+  const ticket = t ? ticketView(state, t) : undefined;
+  for (const p of ticket?.pins ?? []) items.push({ label: `Pin added to your ticket: ${p.title}`, done: true });
+  return { items, ticket };
 }
 
 /** Predictable back: pop history when we navigated here in-app, else go to a sensible parent. */

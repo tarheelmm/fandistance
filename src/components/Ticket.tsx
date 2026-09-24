@@ -7,6 +7,7 @@ import { TicketArt } from './TicketArt';
 import { FDMark } from './FDMark';
 import { TeamMark } from './TeamMark';
 import { PinBadge } from './PinBadge';
+import { Icon } from './Icon';
 import './ticket.css';
 
 /**
@@ -77,6 +78,11 @@ export function Ticket({ view, phase = 'static', printMs = 2800, stampIn, scoreI
                 ))}
                 {view.pins.length > 3 && <span className="pin-more">+{view.pins.length - 3}</span>}
               </div>
+            )}
+            {view.memoryCount > 0 && (
+              <span className="ticket-keeps">
+                <Icon name="image" size={12} stroke={2.4} /> {view.memoryCount} {view.memoryCount === 1 ? 'MEMORY' : 'MEMORIES'}
+              </span>
             )}
           </div>
 
@@ -156,6 +162,7 @@ function ticketLabel(v: TicketView, seatShown: boolean) {
   if (v.finalScore) parts.push(`Final: ${away.short} ${v.finalScore.away}, ${home.short} ${v.finalScore.home}`);
   for (const m of v.marks) parts.push(m.detail);
   for (const p of v.pins) parts.push(`Pin: ${p.title}`);
+  if (v.memoryCount) parts.push(`${v.memoryCount} ${v.memoryCount === 1 ? 'memory' : 'memories'} kept with this ticket`);
   return parts.join('. ');
 }
 

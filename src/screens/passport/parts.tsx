@@ -44,7 +44,7 @@ export function Stub({ t }: { t: TicketView }) {
     <Link
       to={`/passport/ticket/${t.id}`}
       className="stub"
-      aria-label={`${t.shortDate}, ${t.season}: ${home ? 'vs' : 'at'} ${opp.city}${fs ? `, ${t.result === 'W' ? 'win' : 'loss'} ${fanScore}–${oppScore}` : ''}`}
+      aria-label={`${t.shortDate}, ${t.season}: ${home ? 'vs' : 'at'} ${opp.city}${fs ? `, ${t.result === 'W' ? 'win' : 'loss'} ${fanScore}–${oppScore}` : ''}${t.pins.length ? `, ${t.pins.length} ${t.pins.length === 1 ? 'pin' : 'pins'}` : ''}${t.memoryCount ? `, ${t.memoryCount} ${t.memoryCount === 1 ? 'memory' : 'memories'}` : ''}`}
     >
       <div className="stub-info">
         <b>{t.shortDate.toUpperCase()}</b>
@@ -59,6 +59,13 @@ export function Stub({ t }: { t: TicketView }) {
           <span className="stub-res live">{t.live ? 'LIVE' : 'TODAY'}</span>
         )}
         <small>{t.seat.kind === 'seat' ? `${t.seat.section}-${t.seat.row}-${t.seat.seat}` : 'SRO'}</small>
+        {t.pins.length + t.memoryCount > 0 && (
+          <small className="stub-keeps">
+            {[t.pins.length && `${t.pins.length} ${t.pins.length === 1 ? 'pin' : 'pins'}`, t.memoryCount && `${t.memoryCount} ${t.memoryCount === 1 ? 'memory' : 'memories'}`]
+              .filter(Boolean)
+              .join(' · ')}
+          </small>
+        )}
       </div>
       <div className="stub-art">
         <TicketArt theme={t.art} image={t.artImage} date="" time="" lite />

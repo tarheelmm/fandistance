@@ -23,6 +23,8 @@ export interface ScenarioData {
   streakBefore: number;
   /** Past games where the fan was spotlighted as Fan of the Game */
   spotlights: string[];
+  /** Game Day activity already done when the scenario opens (trivia/poll picks, saves, posts) */
+  activity?: Record<string, { trivia?: string; poll?: string; photo?: boolean; coloring?: boolean; posted?: number }>;
 }
 
 const FAN: Fan = {
@@ -270,7 +272,25 @@ export function buildScenario(id: ScenarioId, now: number, seed?: number, avoidA
         tickets: { [game.id]: { ...t, checkedInAt: t.issuedAt + 1000 * 60 * 3, finalScore: game.finalScore } },
         history: buildHistory(REGULAR, v.history(11)),
         followed: ['BAL', 'CAR', 'BLT'],
-        memories: MEMORIES_BASE,
+        // what the fan did during tonight's game, now kept with its ticket
+        memories: [
+          { id: 'm-d-photo', kind: 'photo', title: 'From the Ballpark', date: `${game.shortDate}, ${game.season}`, gameId: game.id, art: 'ballpark' },
+          {
+            id: 'm-d-color',
+            kind: 'creation',
+            title: 'Today’s coloring page',
+            date: `${game.shortDate}, ${game.season}`,
+            gameId: game.id,
+            art: 'coloring',
+            colors: { bg: '#f5efe2', shell: '#f26a1b', claw: '#d7262e', cap: '#111111' },
+          },
+          ...MEMORIES_BASE,
+        ],
+        bench: [
+          { id: 'p-d-1', author: FAN.handle, city: FAN.homeCity, text: 'Representing from Charlotte tonight. Let’s go Baltimore!', minsAgo: 0, likes: 14, replies: 2, mine: true, gameId: game.id },
+          ...common.bench,
+        ],
+        activity: { [game.id]: { trivia: '1992', poll: 'Crab fries', photo: true, coloring: true, posted: 1 } },
         streakBefore: 2,
       };
     }

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useStore, type GameActivity } from '../../state/store';
-import { eligibleGames, fmt, gameById, minutesUntil, nextGame, teamName, ticketedToday, ticketView } from '../../state/selectors';
+import { eligibleGames, fmt, gameById, keepsakes, minutesUntil, nextGame, teamName, ticketedToday, ticketView } from '../../state/selectors';
 import { useNow } from '../../state/hooks';
 import { TEAMS } from '../../data/teams';
 import type { Game } from '../../data/types';
@@ -156,26 +156,46 @@ function tileSnippet(id: string, g: Game, ctx: { benchCount: number; act: GameAc
 function FinalBanner({ gameId }: { gameId: string }) {
   const { state } = useStore();
   const t = state.data.tickets[gameId];
-  const pins = t ? ticketView(state, t).pins : [];
+  const view = t ? ticketView(state, t) : undefined;
+  const keep = keepsakes(state, gameId);
   useEffect(() => {
     const t = setTimeout(() => scoreSeen.add(gameId), 1200);
     return () => clearTimeout(t);
   }, [gameId]);
+  if (!view) return null;
+  const added = [
+    'Final score',
+    'Checked-in stamp',
+    ...view.marks.map((m) => m.detail),
+    keep.memories.length > 0 && `${keep.memories.length} ${keep.memories.length === 1 ? 'photo or creation' : 'photos and creations'}`,
+    (keep.trivia || keep.poll) && `Your ${[keep.trivia && 'trivia answer', keep.poll && 'poll pick'].filter(Boolean).join(' and ')}`,
+    keep.posts.length > 0 && `${keep.posts.length} Bench ${keep.posts.length === 1 ? 'post' : 'posts'}`,
+  ].filter(Boolean) as string[];
   return (
     <div className="gd-final-banner" role="status">
       <Icon name="ticket" size={20} />
       <div>
         <strong>Game final. Your ticket has been updated.</strong>
-        <small>The final score was added to the same ticket you got before the game. It’s saved in your Passport.</small>
-        {pins.length > 0 && (
+        <small>Everything from tonight was added to the same ticket you got before the game. It’s saved in your Passport.</small>
+        {view.pins.length > 0 && (
           <span className="gd-new-pins">
-            {pins.map((p) => (
+            {view.pins.map((p) => (
               <span key={p.kind}>
                 <PinBadge kind={p.kind} season={p.season} size={30} /> New pin: {p.title}
               </span>
             ))}
           </span>
         )}
+        <ul className="gd-added">
+          {added.map((a) => (
+            <li key={a}>
+              <Icon name="check" size={12} stroke={3} /> {a}
+            </li>
+          ))}
+        </ul>
+        <Link to={`/passport/ticket/${t.id}`} className="gd-final-cta">
+          See your ticket in Passport <span aria-hidden="true">→</span>
+        </Link>
       </div>
     </div>
   );

@@ -441,12 +441,14 @@
 }
 
 .td-story,
+.td-keeps,
 .td-life {
   margin-top: 18px;
   padding: 16px;
 }
 
 .td-story h2,
+.td-keeps h2,
 .td-life h2 {
   margin: 0;
   font-size: 26px;
@@ -1223,4 +1225,84 @@
   margin: 0;
   font-size: 11.5px;
   color: var(--muted);
+}
+
+/* Memories kept with a ticket */
+
+.td-mems {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.td-mems .mem {
+  display: grid;
+  color: inherit;
+  text-decoration: none;
+}
+
+.td-mems .mem span {
+  padding: 5px 7px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.td-picks li {
+  align-items: flex-start;
+}
+
+.td-picks li > span {
+  display: grid;
+  gap: 2px;
+}
+
+.td-picks small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.td-posts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.td-posts li {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-left: 3px solid var(--accent);
+}
+
+.td-posts p {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+
+.td-posts small {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.stub-info small.stub-keeps {
+  color: #c2521b;
+  font-weight: 800;
+}
+
+a.mem {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.mem .mem-ticket {
+  margin-top: 2px;
+  color: var(--accent);
+  font-weight: 800;
 }
